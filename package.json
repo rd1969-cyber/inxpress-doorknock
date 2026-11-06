@@ -1,0 +1,13 @@
+{
+  "name": "inxpress-doorknock",
+  "version": "1.0.0",
+  "private": true,
+  "description": "InXpress door-knock capture app (PWA) backed by HubSpot.",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest",
+    "@vercel/functions": "^2.0.0"
+  }
+}

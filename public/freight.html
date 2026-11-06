@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Freight Request — InXpress</title>
+<meta name="theme-color" content="#022F65">
+<link rel="manifest" href="manifest-freight.webmanifest">
+<link rel="apple-touch-icon" href="xq-icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="XpressQuote">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+@font-face{font-family:'Inter Tight';src:url(brand/InterTight-Regular.woff2) format('woff2');font-weight:400}
+@font-face{font-family:'Inter Tight';src:url(brand/InterTight-Medium.woff2) format('woff2');font-weight:500}
+@font-face{font-family:'Inter Tight';src:url(brand/InterTight-SemiBold.woff2) format('woff2');font-weight:600}
+@font-face{font-family:'Inter Tight';src:url(brand/InterTight-Bold.woff2) format('woff2');font-weight:700}
+:root{--navy:#022F65;--green:#00D686;--ink:#1d2733;--muted:#5b6573;--line:#dde3ea;--bg:#f4f6f9;--soft:#eef3f9;--warn:#b45309;--bad:#b42318}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter Tight',Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;padding-bottom:40px}
+header{background:var(--navy);color:#fff;padding:14px 20px;border-bottom:4px solid var(--green);display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:18px;font-weight:700}header .sub{font-size:12px;color:#bfd2ea}
+header img{height:22px}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:14px;border:1px solid var(--line)}
+.card h2{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px}
+label.fl{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:10px 0 4px}
+textarea,input,select{width:100%;padding:10px 12px;border:1.5px solid #c9d1db;border-radius:9px;font:inherit;background:#fff}
+textarea{min-height:170px;resize:vertical}
+textarea:focus,input:focus,select:focus{outline:none;border-color:var(--navy)}
+.drop{margin-top:10px;border:2px dashed #9fb3c8;border-radius:12px;padding:18px;text-align:center;color:var(--muted);cursor:pointer;background:var(--soft)}
+.drop.over{border-color:var(--green);background:#e6fbf3;color:var(--navy)}
+.files{list-style:none;margin-top:8px}.files li{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 8px;border-bottom:1px solid var(--line)}
+.files button{border:none;background:none;color:var(--bad);cursor:pointer;font-size:13px}
+.btn{border:none;border-radius:9px;font:inherit;font-weight:700;padding:12px 16px;cursor:pointer}
+.btn-navy{background:var(--navy);color:#fff}.btn-green{background:var(--green);color:var(--navy)}.btn-ghost{background:#fff;border:1.5px solid #c9d1db;color:var(--ink)}
+.btn:disabled{opacity:.55;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.row>*{flex:1;min-width:150px}
+.ok{color:#05603a;font-weight:700}.warn{color:var(--warn);font-weight:700}.err{color:var(--bad);font-size:13px;margin-top:8px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:14px}.kv b{color:var(--muted);font-weight:600}
+.cands{margin-top:8px}.cand{display:block;width:100%;text-align:left;padding:9px 10px;border:1.5px solid var(--line);border-radius:9px;background:#fff;margin-bottom:6px;cursor:pointer;font:inherit}
+.cand.sel{border-color:var(--green);background:#e6fbf3}
+.cand small{color:var(--muted)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #ccd;border-top-color:var(--navy);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.hidden{display:none !important}
+.pasteRow{display:flex;gap:8px;margin-bottom:8px}.pasteRow .btn{padding:9px 12px;font-size:14px}
+.photoBtn{display:none}
+@media(max-width:560px){
+ body{font-size:16px}.wrap{padding:12px}.card{padding:14px}
+ textarea,input,select{font-size:16px}
+ textarea#text{min-height:140px}
+ .photoBtn{display:inline-block}
+ .drop{padding:14px}
+ .ed .two{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.ed input,.ed select{min-width:0;max-width:100%}
+ .iwrap{overflow:visible !important}.itab{min-width:0 !important;width:100% !important}.itab,.itab tbody{display:block}.itab tr:first-child{display:none}
+ .itab tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:8px;border:1px solid var(--line);border-radius:9px;margin-bottom:6px;background:#fff}
+ .itab td:nth-child(1){grid-area:1/1}.itab td:nth-child(2){grid-area:1/2/2/4}.itab td:nth-child(7){grid-area:1/4}
+ .itab td:nth-child(3){grid-area:2/1}.itab td:nth-child(4){grid-area:2/2}.itab td:nth-child(5){grid-area:2/3}.itab td:nth-child(6){grid-area:2/4}
+ .itab td:nth-child(8){grid-area:3/1/4/5;text-align:right}.itab td:nth-child(8):empty{display:none}
+ .itab td{padding:0;min-width:0 !important;width:auto !important}
+ .itab td::before{content:attr(data-l);display:block;font-size:11px;color:var(--muted);margin-bottom:2px}
+ .itab input,.itab select{font-size:16px;padding:8px 6px}
+ .row .btn{min-width:100%}
+ .inline input{width:96px}
+}
+#login{position:fixed;inset:0;background:rgba(2,47,101,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+#login .card{max-width:360px;width:100%}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+a.deal{color:var(--navy);font-weight:700}
+.tabs{max-width:760px;margin:12px auto 0;padding:0 16px;display:flex;gap:8px}
+.tab{flex:1;padding:10px;border-radius:9px;border:1.5px solid #c9d1db;background:#fff;font:inherit;font-weight:700;color:var(--navy);cursor:pointer}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.opt{display:grid;grid-template-columns:22px minmax(0,1fr) 110px 62px 110px;gap:8px;align-items:center;width:100%;text-align:left;padding:9px 10px;border:1.5px solid var(--line);border-radius:9px;background:#fff;margin-top:6px;cursor:pointer;font:inherit;font-size:14px}
+.opt.sel{border:2px solid var(--green);background:#e6fbf3;cursor:default}
+.opt.head{border:none;background:none;cursor:default;font-size:12px;color:var(--muted);padding:2px 10px;margin-top:4px}
+.opt small{color:var(--muted)}.opt .pr{font-weight:700;color:var(--navy)}
+@media(max-width:560px){.opt{grid-template-columns:18px minmax(0,1fr) 90px}.opt .d,.opt .c{display:none}}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.inline input{width:110px}.inline .btn{padding:9px 12px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 12px}
+.fgrid h3{grid-column:1/-1;font-size:13px;color:var(--navy);margin-top:12px}
+.radio{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:14px}.radio label{display:flex;gap:6px;align-items:center}.radio input{width:auto}
+.status{padding:12px;border-radius:9px;margin-top:4px;font-size:14px}.status.wait{background:#fff7e6;border:1px solid #f5c26b}
+.status.done{background:#e6fbf3;border:1px solid var(--green)}.status.bad{background:#fdecea;border:1px solid #f1a39b}
+.qrow{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;padding:10px;border:1.5px solid var(--line);border-radius:9px;background:#fff;margin-top:6px;cursor:pointer;font:inherit;font-size:14px}
+.qrow small{color:var(--muted)}
+.next{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.next h3{font-size:14px;color:var(--navy);margin-bottom:6px}
+.task{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid var(--line);border-radius:9px;margin-top:6px;font-size:14px}.task small{color:var(--muted);display:block;margin-top:2px}.task a{white-space:nowrap;color:var(--navy);font-weight:700}
+@media(max-width:560px){.task{flex-direction:column}}
+.ed label.fl{margin-top:8px}.ed .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.iwrap{overflow-x:auto}.itab{width:100%;min-width:560px;border-collapse:collapse;margin-top:4px;font-size:13px}.itab td:nth-child(2){min-width:92px}.itab td:nth-child(7){min-width:92px}.itab td:first-child{width:62px}.itab th{text-align:left;color:var(--muted);font-weight:600;padding:2px 3px}
+.itab td{padding:3px}.itab input,.itab select{padding:7px 6px;font-size:13px}.itab .x{border:none;background:none;color:var(--bad);cursor:pointer;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.chip{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:3px 8px 3px 10px;font-size:13px}
+.chip button{border:none;background:none;color:var(--bad);cursor:pointer;margin-left:4px}
+.drbox{margin-top:12px;padding:14px;border:2px solid var(--green);border-radius:12px;background:#e6fbf3}.drbox h3{font-size:14px;color:var(--navy);margin-bottom:4px}
+.drbox .inline input{width:150px}.drcopy{white-space:pre-wrap;font:13px/1.45 Consolas,Menlo,monospace;background:#fff;border:1px solid var(--line);border-radius:9px;padding:8px 10px;margin-top:8px}
+.drbox a.lnk,.drbox button.lnk{color:var(--navy);font-weight:700;background:none;border:none;font:inherit;cursor:pointer;padding:0;text-decoration:underline}
+.opt.ref{opacity:.6;cursor:default}
+.miss{margin-top:10px;padding:9px 12px;border-radius:9px;background:#fff7e6;border:1px solid #f5c26b;font-size:14px}.miss.okk{background:#e6fbf3;border-color:var(--green)}
+</style>
+</head>
+<body>
+<header><div><div class="sub">XpressQuote</div><h1>New freight request</h1></div><img src="brand/logo-green.svg" alt="InXpress"></header>
+
+<div class="tabs"><button class="tab on" id="tabNew">New request</button><button class="tab" id="tabBook">Book a quote</button></div>
+<div class="wrap">
+  <div class="card hidden" id="quotesCard"><h2>Book a quote</h2>
+    <input id="qs" placeholder="Search customer, quote # or deal name…">
+    <div id="qlist"></div><div class="err" id="errQ"></div>
+    <p class="note">Priced deals at Quote Request Received or Quote Submitted, newest first.</p></div>
+
+  <div class="card" id="step1">
+    <h2>1. Paste the request and/or drop files</h2>
+    <div class="pasteRow hidden" id="pasteRow"><button class="btn btn-ghost" id="pasteBtn">Paste copied email</button><button class="btn btn-ghost photoBtn" id="photoBtn">Take a photo</button></div>
+    <textarea id="text" placeholder="Paste the customer's email here, or type the call notes (pickup and delivery postal codes, pieces, dimensions, weights, extras)…"></textarea>
+    <div class="drop" id="drop">Drop files here or click to choose<br><small>PDF, Excel / CSV, Word, photos or screenshots, saved emails (.eml / .msg) — up to about 3 MB in total</small></div>
+    <input type="file" id="cam" class="hidden" accept="image/*" capture="environment">
+    <input type="file" id="pick" multiple class="hidden" accept=".pdf,.xlsx,.xlsm,.csv,.txt,.docx,.png,.jpg,.jpeg,.gif,.webp,.eml,.msg">
+    <ul class="files" id="files"></ul>
+    <label class="fl" for="owner">Who's handling it</label>
+    <select id="owner"><option value="">Loading…</option></select>
+    <div class="row"><button class="btn btn-navy" id="readBtn">Read</button></div>
+    <div class="err" id="err1"></div>
+  </div>
+
+  <div class="card hidden" id="step2">
+    <h2>2. Check and fix what XpressQuote read</h2>
+    <div class="kv" id="readOut"></div>
+    <div class="ed" id="edit"></div>
+    <div id="custBox" style="margin-top:12px"></div>
+    <div class="row"><button class="btn btn-green" id="createBtn">Create the deal</button><button class="btn btn-ghost" id="backBtn">Change the request</button></div>
+    <div class="err" id="err2"></div>
+  </div>
+
+  <div class="card hidden" id="step3"><h2 id="dTitle">Quote</h2><div id="doneOut"></div>
+    <div id="drBox"></div>
+    <div id="optsBox"></div>
+    <div id="priceBox"></div>
+    <div id="nextBox"></div>
+    <div class="err" id="err3"></div>
+    <div class="row"><button class="btn btn-green hidden" id="bookOpen">Book this shipment</button><button class="btn btn-ghost" id="newBtn">New request</button></div></div>
+
+  <div class="card hidden" id="bookCard"><h2 id="bTitle">Book</h2>
+    <p class="note" style="margin-top:0">Filled in from the request. Check it, then request the booking. Bob or Michae approves it (with their PIN, here or in HubSpot) and it books right away.</p>
+    <div class="fgrid" id="bForm"></div>
+    <div class="radio"><label><input type="radio" name="bact" value="Create BOL + dispatch" checked> BOL + dispatch the pickup</label><label><input type="radio" name="bact" value="Create BOL only"> BOL only</label></div>
+    <div class="row"><button class="btn btn-green" id="reqBtn">Request booking</button><button class="btn btn-navy" id="apprBtn">Approver: book now</button></div>
+    <div class="inline hidden" id="pinRow"><input type="password" id="pin" placeholder="Approver PIN" autocomplete="off"><button class="btn btn-navy" id="pinGo">Approve and book</button><small class="note" style="margin:0">Remembered on this device.</small></div>
+    <div class="err" id="errB"></div>
+    <p class="note">Before booking, the price is re-checked with accuFRATE. If the cost went up more than 3%, nothing is booked and you'll see why.</p></div>
+
+  <div class="card hidden" id="statusCard"><h2>Booking</h2><div id="statusOut"></div></div>
+
+  <p class="note" id="footNote">The deal is created in the Freight Pipeline at Quote Request Received and priced right away. Nothing is sent to the customer or carriers. Contacts and companies are only linked, never created.</p>
+</div>
+
+<div id="login" class="hidden"><div class="card"><h2>Team password</h2>
+  <p class="note" style="margin-bottom:8px">The same password as the other InXpress team tools. You'll only enter it once on this device.</p>
+  <input type="password" id="pw" autocomplete="off"><div class="row"><button class="btn btn-navy" id="pwBtn">Continue</button></div><div class="err" id="pwErr"></div></div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let files=[], readRes=null, chosen=null;
+const MAX=3.2*1024*1024;
+
+async function api(body){
+  let pw=''; try{pw=localStorage.getItem('ix_pw')||''}catch(e){}
+  const r=await fetch('/api/freight_request',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({...body,password:pw})});
+  if(r.status===401){try{localStorage.removeItem('ix_pw')}catch(e){} await askLogin(pw?'Wrong password, try again.':''); return api(body);}
+  if(r.status===413) throw new Error('The files are too big together (about 3 MB max). Remove one and try again.');
+  const j=await r.json().catch(()=>({error:'Unexpected reply ('+r.status+')'}));
+  if(!r.ok||j.error) throw new Error(j.error||('Error '+r.status));
+  return j;
+}
+// Login: Enter or Continue checks the password with the server, then carries on with whatever was waiting (e.g. Read).
+let loginWait=null;
+function showLogin(msg){$('login').classList.remove('hidden');$('pwErr').textContent=msg||'';$('pw').value='';$('pw').focus();}
+function askLogin(msg){ showLogin(msg); if(!loginWait){ let res; const p=new Promise(r=>res=r); loginWait={p,res}; } return loginWait.p; }
+async function submitPw(){
+  const v=$('pw').value.trim(); if(!v){$('pwErr').textContent='Enter the password.';return;}
+  const btn=$('pwBtn'); btn.disabled=true; btn.textContent='Checking…'; $('pwErr').textContent='';
+  try{
+    const r=await fetch('/api/freight_request',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'owners',password:v})});
+    if(r.status===401){ $('pwErr').textContent='Wrong password, try again.'; $('pw').select(); return; }
+    try{localStorage.setItem('ix_pw',v)}catch(e){}
+    $('login').classList.add('hidden');
+    if(loginWait){ const w=loginWait; loginWait=null; w.res(); } else loadOwners();
+  }catch(e){ $('pwErr').textContent='Could not reach the server: '+e.message; }
+  finally{ btn.disabled=false; btn.textContent='Continue'; }
+}
+$('pwBtn').onclick=submitPw;
+$('pw').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); submitPw(); } });
+
+async function loadOwners(){
+  try{const j=await api({action:'owners'}); let last=''; try{last=localStorage.getItem('ix_freight_owner')||''}catch(e){}
+    $('owner').innerHTML=j.owners.map(o=>`<option value="${esc(o.id)}">${esc(o.name)}</option>`).join('');
+    if(last && j.owners.some(o=>o.id===last)) $('owner').value=last;
+    else if(j.owners.some(o=>o.id==='1640189485')) $('owner').value='1640189485';
+  }catch(e){ if(e.message!=='login') $('err1').textContent=e.message; }
+}
+$('owner').onchange=()=>{try{localStorage.setItem('ix_freight_owner',$('owner').value)}catch(e){}};
+
+function renderFiles(){
+  $('files').innerHTML=files.map((f,i)=>`<li>${esc(f.name)} <span><small>${(f.size/1024).toFixed(0)} KB</small> <button data-i="${i}" aria-label="Remove ${esc(f.name)}">Remove</button></span></li>`).join('');
+  $('files').querySelectorAll('button').forEach(b=>b.onclick=()=>{files.splice(+b.dataset.i,1);renderFiles();});
+}
+// Phone photos and screenshots are often 3-5 MB: shrink pictures to 2000 px / JPEG before upload (still sharp enough to read).
+async function shrink(f){
+  if(!/^image\/(jpeg|png|webp|heic|heif)$/i.test(f.type) || (f.size<700*1024)) return f;
+  try{
+    const img=await createImageBitmap(f); const k=Math.min(1,2000/Math.max(img.width,img.height));
+    const c=document.createElement('canvas'); c.width=Math.round(img.width*k); c.height=Math.round(img.height*k);
+    const g=c.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,c.width,c.height); g.drawImage(img,0,0,c.width,c.height);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',0.85));
+    return blob && blob.size<f.size ? new File([blob], f.name.replace(/\.\w+$/,'')+'.jpg', {type:'image/jpeg'}) : f;
+  }catch(e){ return f; }
+}
+async function addFiles(list){
+  const arr=[...list]; $('err1').textContent=arr.some(f=>/^image\//.test(f.type))?'Preparing picture…':'';
+  for(const f of arr){ files.push(await shrink(f)); }
+  renderFiles(); $('err1').textContent='';
+}
+const drop=$('drop');
+drop.onclick=()=>$('pick').click(); $('pick').onchange=e=>{addFiles(e.target.files); e.target.value='';};
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over');}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over');}));
+drop.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+document.addEventListener('dragover',e=>e.preventDefault()); document.addEventListener('drop',e=>{ if(!drop.contains(e.target)){e.preventDefault(); if(e.dataTransfer.files.length) addFiles(e.dataTransfer.files);} });
+
+// phone helpers: paste button, camera, text shared into the app (Android share menu), touch wording
+if(navigator.clipboard && navigator.clipboard.readText) $('pasteRow').classList.remove('hidden');
+if(matchMedia('(max-width:560px)').matches) $('pasteRow').classList.remove('hidden');
+$('pasteBtn').onclick=async()=>{ try{ const t=await navigator.clipboard.readText(); if(t){ $('text').value=($('text').value?$('text').value+'\n\n':'')+t; $('err1').textContent=''; } else $('err1').textContent='Nothing copied yet. Copy the email first.'; }
+  catch(e){ $('err1').textContent='Your phone blocked pasting here. Press and hold in the box, then tap Paste.'; $('text').focus(); } };
+$('photoBtn').onclick=()=>$('cam').click(); $('cam').onchange=e=>{ addFiles(e.target.files); e.target.value=''; };
+(()=>{ const q=new URLSearchParams(location.search); const t=[q.get('title'),q.get('text'),q.get('url')].filter(Boolean).join('\n\n');
+  if(t){ $('text').value=t; history.replaceState(null,'',location.pathname); } })();
+if(matchMedia('(pointer:coarse)').matches) $('drop').innerHTML='Tap to add files<br><small>PDF, Excel, Word, photos or screenshots, saved emails — up to about 3 MB in total</small>';
+
+const b64=f=>new Promise((res,rej)=>{const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.onerror=rej; r.readAsDataURL(f);});
+async function payloadFiles(){ const total=files.reduce((s,f)=>s+f.size,0); if(total>MAX) throw new Error('The files are too big together (about 3 MB max). Remove one and try again.');
+  return Promise.all(files.map(async f=>({name:f.name,b64:await b64(f)}))); }
+
+$('readBtn').onclick=async()=>{
+  $('err1').textContent='';
+  if(!$('text').value.trim() && !files.length){ $('err1').textContent='Paste a request or drop a file first.'; return; }
+  const btn=$('readBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Reading… (about 10–20 seconds)';
+  try{ readRes=await api({action:'read',text:$('text').value,files:await payloadFiles()}); showRead(); }
+  catch(e){ if(e.message!=='login') $('err1').textContent=e.message; }
+  finally{ btn.disabled=false; btn.textContent='Read'; }
+};
+
+function showRead(){
+  const s=readRes.shipment||{}, g=readRes.guess||{}, c=readRes.customer||{};
+  const rows=[['What',esc(s.summary||'')],['Files read',esc((readRes.files||[]).join(', ')||'none')]];
+  if((s.assumptions||[]).length) rows.push(['<span class="warn">Check</span>','<span class="warn">'+esc(s.assumptions.join(' · '))+'</span>']);
+  renderEdit(s);
+  if(g.is_freight_request===false) rows.unshift(['<span class="warn">Note</span>','<span class="warn">This may not be a freight request: '+esc(g.reason||'')+'</span>']);
+  $('readOut').innerHTML=rows.map(r=>`<b>${r[0]}</b><div>${r[1]}</div>`).join('');
+  chosen=c.company?{id:c.company.id,name:c.company.name}:null;
+  if(c.company && c.sure){
+    $('custBox').innerHTML=`<div><span class="ok">Customer: ${esc(c.company.name)} ✓</span> <small>(${esc(c.how)}${c.contact?', contact '+esc(c.contact.name):''})</small>
+      <button class="btn btn-ghost" style="padding:5px 10px;margin-left:8px" id="chg">Change</button></div><div id="pickWrap"></div>`;
+    $('chg').onclick=()=>renderPicker([]);
+  } else { renderPicker(c.candidates||[], c.how); }
+  $('step1').classList.add('hidden'); $('step2').classList.remove('hidden'); $('err2').textContent='';
+}
+// ---------------------------------------------------------------- step 2: edit what was read (pricing uses exactly this)
+const EQUIP=['Not stated','Dry Van','Flatbed','Step Deck','RGN / Lowboy','Conestoga','Reefer','Straight Truck','Container','Hot Shot'];
+const NODIM=['Flatbed','Step Deck','RGN / Lowboy','Conestoga','Hot Shot'];
+const ACC=['Liftgate Delivery','Liftgate Pickup','Residential Delivery','Residential Pickup','Appointment','Notification Prior To Delivery','Inside Delivery','Inside Pickup',
+  'Limited Access Delivery','Limited Access Pickup','Hazmat','Protect From Freezing','Trade Show Delivery','Trade Show Pickup','Construction Site Delivery','Construction Site Pickup',
+  'School Delivery','Farm Delivery','Place Of Worship Delivery','Military Delivery','Storage Facility Delivery','Airport Delivery','Saturday Delivery'];
+const TYPES=['skids','boxes','crates','cartons','drums','pieces','rolls','totes','bundles'];
+let edAcc=[], edItems=[], edVol=false;
+function renderEdit(s){
+  edAcc=[...(s.accessorials||[])]; edVol=!!s.volume_or_ftl;
+  edItems=(s.items||[]).map(i=>({...i})); if(!edItems.length) edItems=[{qty:1,length:'',width:'',height:'',weight_each:'',units:'in-lb',type:'skids',description:'',class:''}];
+  $('edit').innerHTML=`<div class="two"><div><label class="fl" for="eFrom">Pickup postal / ZIP</label><input id="eFrom" autocapitalize="characters" autocomplete="off" value="${esc(s.from_zip||'')}"></div>
+      <div><label class="fl" for="eTo">Delivery postal / ZIP</label><input id="eTo" autocapitalize="characters" autocomplete="off" value="${esc(s.to_zip||'')}"></div></div>
+    <div class="two"><div><label class="fl" for="eDate">Pickup date</label><input id="eDate" type="date" value="${esc(s.pickup_date||'')}"></div>
+      <div><label class="fl" for="eEq">Equipment</label><select id="eEq">${EQUIP.map(x=>`<option${x===(s.equipment||'Not stated')?' selected':''}>${x}</option>`).join('')}</select></div></div>
+    <label class="fl">Pieces and dimensions</label><div id="eItems"></div>
+    <button class="btn btn-ghost" style="padding:6px 10px;margin-top:6px" id="eAdd">+ Add a line</button>
+    <label class="fl">Extras (accessorials)</label><div class="chips" id="eAcc"></div>
+    <select id="eAccAdd" style="margin-top:6px"><option value="">+ Add an extra…</option>${ACC.map(x=>`<option>${x}</option>`).join('')}</select>
+    <label class="fl" for="eReq">Carrier requirements</label><textarea id="eReq" style="min-height:60px">${esc(s.carrier_requirements||'')}</textarea>
+    <div id="eMiss"></div>`;
+  drawItems(); drawAcc(); checkMissing();
+  ['eFrom','eTo','eEq'].forEach(id=>$(id).addEventListener('input',checkMissing));
+  $('eAdd').onclick=()=>{ readItems(); edItems.push({qty:1,length:'',width:'',height:'',weight_each:'',units:(edItems[0]||{}).units||'in-lb',type:'skids',description:'',class:''}); drawItems(); checkMissing(); };
+  $('eAccAdd').onchange=()=>{ const v=$('eAccAdd').value; if(v&&!edAcc.includes(v)) edAcc.push(v); $('eAccAdd').value=''; drawAcc(); };
+}
+function drawItems(){
+  $('eItems').innerHTML=`<div class="iwrap"><table class="itab"><tr><th>Qty</th><th>Type</th><th>L</th><th>W</th><th>H</th><th>Wt each</th><th>Units</th><th>Stack</th><th></th></tr>`+
+    edItems.map((i,n)=>`<tr data-n="${n}"><td data-l="Qty"><input data-k="qty" type="number" inputmode="numeric" min="1" value="${esc(i.qty)}"></td>
+      <td data-l="Type"><select data-k="type">${TYPES.map(t=>`<option${t===i.type?' selected':''}>${t}</option>`).join('')}</select></td>
+      <td data-l="Length"><input data-k="length" type="number" inputmode="decimal" value="${esc(i.length)}"></td><td data-l="Width"><input data-k="width" type="number" inputmode="decimal" value="${esc(i.width)}"></td>
+      <td data-l="Height"><input data-k="height" type="number" inputmode="decimal" value="${esc(i.height)}"></td><td data-l="Weight each"><input data-k="weight_each" type="number" inputmode="decimal" value="${esc(i.weight_each)}"></td>
+      <td data-l="Units"><select data-k="units"><option value="in-lb"${i.units!=='cm-kg'?' selected':''}>in / lb</option><option value="cm-kg"${i.units==='cm-kg'?' selected':''}>cm / kg</option></select></td>
+      <td data-l="Stackable"><input data-k="stackable" type="checkbox" title="Stackable"${i.stackable?' checked':''}></td>
+      <td>${edItems.length>1?`<button class="x" data-del="${n}" aria-label="Remove line">×</button>`:''}</td></tr>`).join('')+`</table></div>`;
+  $('eItems').querySelectorAll('input,select').forEach(el=>el.addEventListener('input',()=>{readItems(); checkMissing();}));
+  $('eItems').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{ readItems(); edItems.splice(+b.dataset.del,1); drawItems(); checkMissing(); });
+}
+function readItems(){
+  $('eItems').querySelectorAll('tr[data-n]').forEach(tr=>{ const i=edItems[+tr.dataset.n];
+    tr.querySelectorAll('[data-k]').forEach(el=>{ const k=el.dataset.k; i[k]=k==='stackable'?el.checked:['type','units'].includes(k)?el.value:(el.value===''?'':Number(el.value)); }); });
+}
+function drawAcc(){
+  $('eAcc').innerHTML=edAcc.length?edAcc.map((a,n)=>`<span class="chip">${esc(a)}<button data-n="${n}" aria-label="Remove ${esc(a)}">×</button></span>`).join(''):'<span class="note" style="margin:0">None: dock to dock</span>';
+  $('eAcc').querySelectorAll('button').forEach(b=>b.onclick=()=>{ edAcc.splice(+b.dataset.n,1); drawAcc(); });
+}
+function missingNow(){
+  const need=[]; if(!$('eFrom').value.trim()) need.push('pickup postal code'); if(!$('eTo').value.trim()) need.push('delivery postal code');
+  if(!NODIM.includes($('eEq').value) && !edVol){
+    if(!edItems.every(i=>Number(i.qty)>0)) need.push('piece count');
+    if(!edItems.every(i=>Number(i.weight_each)>0)) need.push('weights');
+    if(!edItems.every(i=>Number(i.length)>0&&Number(i.width)>0&&Number(i.height)>0)) need.push('dimensions');
+  }
+  return need;
+}
+function checkMissing(){
+  const m=missingNow();
+  $('eMiss').innerHTML=m.length?`<div class="miss"><b>Still missing:</b> ${esc(m.join(', '))}. Fill it in above to price it now, or create the deal as is and XpressQuote will make a task to ask the customer.</div>`
+    :`<div class="miss okk">Everything needed to price it is here.</div>`;
+}
+function editData(){
+  readItems();
+  return {from_zip:$('eFrom').value.trim().toUpperCase(), to_zip:$('eTo').value.trim().toUpperCase(), pickup_date:$('eDate').value, equipment:$('eEq').value,
+    accessorials:[...edAcc], carrier_requirements:$('eReq').value.trim(), volume_or_ftl:edVol,
+    items:edItems.map(i=>({qty:Number(i.qty)||0,length:Number(i.length)||0,width:Number(i.width)||0,height:Number(i.height)||0,weight_each:Number(i.weight_each)||0,
+      units:i.units||'in-lb',type:i.type||'skids',description:i.description||'',class:i.class||'',stackable:!!i.stackable}))};
+}
+function renderPicker(cands,why){
+  const box=$('pickWrap')||$('custBox');
+  box.innerHTML=`<div class="warn" style="margin-bottom:6px">${esc(why?('Customer: '+why+'. Pick the company:'):'Pick the company:')}</div>
+    <div class="cands" id="cands"></div><input id="q" placeholder="Search HubSpot companies…"><div class="note">Leave it if the customer isn't in HubSpot: the deal is created without a company and the default 25% margin applies (flagged for approval).</div>`;
+  const draw=list=>{ $('cands').innerHTML=list.map(x=>`<button class="cand${chosen&&chosen.id===x.id?' sel':''}" data-id="${esc(x.id)}" data-name="${esc(x.name)}">${esc(x.name)} <small>${esc([x.domain,x.where].filter(Boolean).join(' · '))}</small></button>`).join('');
+    $('cands').querySelectorAll('.cand').forEach(b=>b.onclick=()=>{chosen={id:b.dataset.id,name:b.dataset.name}; draw(list);}); };
+  draw(cands);
+  let t; $('q').oninput=()=>{clearTimeout(t); const q=$('q').value.trim(); if(q.length<2) return; t=setTimeout(async()=>{ try{const j=await api({action:'search',q}); draw(j.companies);}catch(e){} },350);};
+}
+$('backBtn').onclick=()=>{ $('step2').classList.add('hidden'); $('step1').classList.remove('hidden'); };
+
+$('createBtn').onclick=async()=>{
+  const btn=$('createBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Creating and pricing… (up to 2 minutes)'; $('err2').textContent='';
+  const c=readRes.customer||{}, g=readRes.guess||{}, sel=$('owner');
+  try{
+    const j=await api({action:'create',text:$('text').value,files:await payloadFiles(),transcript:readRes.transcript||'',
+      company_id:chosen?chosen.id:null, contact_id:(c.contact&&chosen&&c.company&&chosen.id===c.company.id)?c.contact.id:null,
+      owner_id:sel.value, owner_name:sel.options[sel.selectedIndex]?sel.options[sel.selectedIndex].text:'', origin:g.origin_city||'', dest:g.destination_city||'',
+      shipment:editData()});
+    const r=j.result||{}, route=r.freight_quote_route||(j.priced&&j.priced.route)||'';
+    const what= route==='accuFRATE' ? `Priced: cost C$${esc(r.cost_cad||'?')}, price C$${esc(r.amount||'?')} (${esc(r.freight_recommended_carrier||'')}). Review task is in the Freight queue.`
+      : route==='Missing information' ? `Missing information: ${esc(r.freight_missing_info||r.freight_route_reason||'')}. Task created to ask the customer.`
+      : route ? `Route: ${esc(route)}. ${esc(r.freight_route_reason||'')} Tasks are in the Freight queue.`
+      : (j.priced&&j.priced.error) ? `<span class="warn">Created, but pricing stopped: ${esc(j.priced.error)}</span>` : 'Created; pricing will finish in a minute.';
+    const extra=((j.files_attached||[]).length?`<p class="note">Files attached to the deal: ${esc(j.files_attached.join(', '))}</p>`:'')+
+      ((j.file_problems||[]).length?`<p class="err">Not attached: ${esc(j.file_problems.join('; '))}</p>`:'');
+    $('step2').classList.add('hidden');
+    const v=(j.view&&!j.view.error)?j.view:{deal_id:j.deal_id,dealname:j.dealname,url:j.url,options:[]};
+    if((v.options||[]).length || v.route) showDeal(v, (v.options||[]).length?extra:`<p style="margin-top:8px">${what}</p>`+extra);
+    else waitForPrice(v, extra);
+  }catch(e){ if(e.message!=='login') $('err2').textContent=e.message; }
+  finally{ btn.disabled=false; btn.textContent='Create the deal'; }
+};
+$('newBtn').onclick=()=>{ files=[]; renderFiles(); $('text').value=''; readRes=null; chosen=null; setTab('new'); };
+
+// ---------------------------------------------------------------- quote view, carrier switch, margin / price, booking
+let cur=null, poll=null;
+const money=v=>v==null||v===''?'—':'C$'+Number(v).toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const BF=[['h','Shipper (pickup)'],['shipper_company','Company'],['shipper_address','Address'],['shipper_address2','Address line 2'],['shipper_contact','Contact'],['shipper_phone','Phone'],['shipper_email','Email'],
+  ['h','Consignee (delivery)'],['consignee_company','Company'],['consignee_address','Address'],['consignee_address2','Address line 2'],['consignee_contact','Contact'],['consignee_phone','Phone'],['consignee_email','Email'],
+  ['h','Pickup and references'],['pickup_date','Pickup date'],['pickup_ready_time','Ready time (e.g. 09:00)'],['pickup_close_time','Close time (e.g. 16:30)'],['commodity','Commodity'],['po_number','PO #'],['so_number','SO #'],['reference_numbers','Other references'],['special_instructions','Special instructions']];
+function closeDeal(){ cur=null; drEdit=false; clearInterval(poll); ['step3','bookCard','statusCard'].forEach(id=>$(id).classList.add('hidden')); }
+function showDeal(v, extraHtml){
+  cur=v; $('err3').textContent='';
+  ['step1','step2','quotesCard'].forEach(id=>$(id).classList.add('hidden')); $('step3').classList.remove('hidden');
+  $('dTitle').textContent=v.dealname||'Quote';
+  const items=(v.items||[]).map(i=>`${i.qty} × ${i.length}×${i.width}×${i.height} @ ${i.weight_each} ${i.units==='cm-kg'?'kg':'lb'}`).join(', ');
+  $('doneOut').innerHTML=`<p><a class="deal" href="${esc(v.url)}" target="_blank" rel="noopener">Open the deal in HubSpot ↗</a></p>`+
+    (v.lane?`<p class="note">${esc(v.lane)}${items?' · '+esc(items):''}${(v.accessorials||[]).length?' · '+esc(v.accessorials.join(', ')):' · dock to dock'}</p>`:'')+(extraHtml||'');
+  const o=v.options||[], drWait=v.dr_direct==='waiting';
+  renderDr(v);
+  $('optsBox').innerHTML=o.length?(drWait?`<p class="note" style="margin-top:12px"><b>Reference only:</b> accuFRATE prices, in case the D&amp;R portal is down. This customer is quoted with the Day &amp; Ross direct rate.</p>`:'')+
+    `<div class="opt head"><span></span><span>Carrier</span><span class="c">Cost</span><span class="d">Days</span><span>Customer price</span></div>`+
+    o.map(x=>`<button class="opt${x.selected?' sel':''}${drWait?' ref':''}" data-n="${x.n}"><span>${x.selected?'●':'○'}</span><span>${esc(x.carrier)}${x.source?` <small>${esc(x.source)}</small>`:''}</span>`+
+      `<span class="c">${x.cur==='USD'?esc(x.cost.toFixed(2))+' USD':money(x.cost_cad)}${x.di?` <small>+DI ${x.di}%</small>`:''}</span><span class="d">${esc(x.days||'—')}</span><span class="pr">${money(x.price)}</span></button>`).join('')+
+    (drWait?'':`<p class="note">Click a carrier to switch to it. The deal's cost, carrier and price update.</p>`):'';
+  if(!drWait) $('optsBox').querySelectorAll('.opt[data-n]').forEach(b=>{ if(!b.classList.contains('sel')) b.onclick=()=>dealCall({action:'set_option',n:+b.dataset.n},b); });
+  $('priceBox').innerHTML=(o.length&&!drWait)?`<div class="inline"><label class="fl" style="margin:0">Margin %</label><input id="mIn" type="number" step="0.5" value="${v.margin_pct??''}"><button class="btn btn-ghost" id="mGo">Save margin</button>
+     <label class="fl" style="margin:0 0 0 8px">Price to quote</label><input id="aIn" type="number" step="0.01" value="${v.amount??''}"><button class="btn btn-ghost" id="aGo">Save price</button></div>
+     <p class="note">Cost ${money(v.cost_cad)} · ${v.margin_note?esc(v.margin_note):'Margin from the company rule.'} A price you type is kept if you switch carrier.</p>`:'';
+  if($('mGo')){ $('mGo').onclick=()=>dealCall({action:'set_margin',pct:$('mIn').value},$('mGo')); $('aGo').onclick=()=>dealCall({action:'set_amount',amount:$('aIn').value},$('aGo')); }
+  const tk=v.tasks||[], tlink=t=>`${esc(v.url)}?engagement=${encodeURIComponent(t.id)}`;
+  const hasSend=tk.some(t=>/quote review|review.*quote|send.*quote/i.test(t.subject));
+  const sendRow=(o.length && !drWait && !hasSend && !v.bol)?`<div class="task"><div>Send the quote to the customer<small>Email → Templates → Customer - Quote (XpressQuote) → check → Send. Then move the deal to Quote Submitted.</small></div><a href="${esc(v.url)}" target="_blank" rel="noopener">Open the deal ↗</a></div>`:'';
+  $('nextBox').innerHTML=(tk.length||sendRow)?`<div class="next"><h3>Next steps</h3>`+sendRow+tk.map(t=>`<div class="task"><div>${esc(t.subject)}<small>${esc(t.body.slice(0,180))}${t.body.length>180?'…':''}</small></div>`+
+      `<a href="${tlink(t)}" target="_blank" rel="noopener">Open the task ↗</a></div>`).join('')+
+      `<p class="note">Emails go from the deal in HubSpot (Email → Templates), so they're logged on the deal. The quote uses the <b>Customer - Quote (XpressQuote)</b> template (price and details fill in); missing info uses <b>Customer - Missing Information</b>.</p></div>`:'';
+  $('bookOpen').classList.toggle('hidden',!v.can_book || !!v.bol);
+  $('bookCard').classList.add('hidden'); renderStatus(v);
+}
+// Day & Ross direct customers (Big Eric's): the rate comes from the D&R portal and is typed in here; booking is done in the portal.
+let drEdit=false;
+function renderDr(v){
+  const box=$('drBox'), r=v.dr_rate;
+  if(!v.dr_direct){ box.innerHTML=''; return; }
+  const portal=`<a class="lnk" href="${esc(v.dr_portal)}" target="_blank" rel="noopener">Open the D&amp;R portal ↗</a>`;
+  if(v.dr_direct==='entered' && r && !drEdit){
+    box.innerHTML=`<div class="drbox"><h3>Day &amp; Ross direct rate</h3><p>${money(r.cost_cad)} all-in${r.days?` · ${esc(r.days)} days`:''}${r.quote_no?` · D&amp;R quote # ${esc(r.quote_no)}`:''} <button class="lnk" id="drChange">Change D&amp;R rate</button></p>`+
+      (v.dr_booking&&!v.bol?`<p class="note"><b>Booking:</b> book this shipment in the Day &amp; Ross portal (account ${esc(v.dr_account)}), then put the BOL / PRO # on the deal in HubSpot. ${portal}</p>`:'')+`</div>`;
+    $('drChange').onclick=()=>{ drEdit=true; renderDr(cur); };
+    return;
+  }
+  box.innerHTML=`<div class="drbox"><h3>Day &amp; Ross direct rate${v.dr_direct==='waiting'?' needed':''}</h3>
+    <p class="note" style="margin-top:0">This customer is priced with Day &amp; Ross direct. Get a quote in the D&amp;R portal (account ${esc(v.dr_account)}) with these details, then enter the all-in rate (incl. fuel and the accessorials listed).</p>
+    ${v.dr_copy?`<div class="drcopy" id="drCopyTxt">${esc(v.dr_copy)}</div>`:''}
+    <p style="margin-top:8px">${v.dr_copy?'<button class="lnk" id="drCopy">Copy the details</button> · ':''}${portal}</p>
+    <div class="inline"><input id="drCost" type="number" step="0.01" inputmode="decimal" placeholder="All-in cost CAD" value="${r?esc(r.cost_cad):''}">
+      <input id="drDays" type="number" step="1" inputmode="numeric" placeholder="Transit days" value="${r?esc(r.days):''}">
+      <input id="drQno" placeholder="D&amp;R quote #" value="${r?esc(r.quote_no):''}">
+      <button class="btn btn-green" id="drSave">Save rate</button>${drEdit?'<button class="btn btn-ghost" id="drCancel">Cancel</button>':''}</div></div>`;
+  if($('drCopy')) $('drCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(v.dr_copy); $('drCopy').textContent='Copied ✓'; }catch(e){ $('drCopy').textContent='Select the text above and copy it'; } };
+  if($('drCancel')) $('drCancel').onclick=()=>{ drEdit=false; renderDr(cur); };
+  $('drSave').onclick=()=>{ if(!$('drCost').value){ $('err3').textContent='Enter the all-in cost from the D&R portal.'; return; }
+    drEdit=false; dealCall({action:'set_direct_rate',cost_cad:$('drCost').value,days:$('drDays').value,dr_quote_no:$('drQno').value,who:who()},$('drSave')); };
+}
+async function dealCall(body,btn){
+  const old=btn?btn.innerHTML:''; if(btn){btn.disabled=true; btn.innerHTML='<span class="spin"></span>Saving…';} $('err3').textContent='';
+  try{ const j=await api({...body,deal_id:cur.deal_id}); if(j.error) throw new Error(j.error); showDeal(j); }
+  catch(e){ if(e.message!=='login') $('err3').textContent=e.message; if(btn){btn.disabled=false; btn.innerHTML=old;} }
+}
+$('bookOpen').onclick=async()=>{
+  const btn=$('bookOpen'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Getting the details…';
+  try{ const j=await api({action:'deal',deal_id:cur.deal_id,fill:true}); if(j.error) throw new Error(j.error); cur=j; openBook(j); }
+  catch(e){ if(e.message!=='login') $('err3').textContent=e.message; }
+  finally{ btn.disabled=false; btn.textContent='Book this shipment'; }
+};
+function openBook(v){
+  const sel=(v.options||[]).find(x=>x.selected);
+  $('bTitle').textContent='Book'+(sel?` with ${sel.carrier} · cost ${money(sel.cost_cad)}`:'');
+  const val=k=>k==='pickup_date'?(v.pickup_date||''):((v.booking||{})[k]||'');
+  $('bForm').innerHTML=BF.map(([k,l])=>k==='h'?`<h3>${esc(l)}</h3>`:`<div><label class="fl" for="b_${k}">${esc(l)}</label>`+
+    (k==='special_instructions'?`<textarea id="b_${k}" style="min-height:70px">${esc(val(k))}</textarea>`:`<input id="b_${k}" ${k==='pickup_date'?'type="date"':/_phone$/.test(k)?'type="tel" inputmode="tel"':/_email$/.test(k)?'type="email" inputmode="email" autocapitalize="off"':''} value="${esc(val(k))}">`)+`</div>`).join('');
+  $('errB').textContent=''; $('pinRow').classList.add('hidden');
+  $('bookCard').classList.remove('hidden'); $('bookCard').scrollIntoView({behavior:'smooth'});
+}
+function formData(){ const f={}; BF.forEach(([k])=>{ if(k!=='h'&&k!=='pickup_date') f[k]=$('b_'+k).value; });
+  return {fields:f, pickup_date:$('b_pickup_date').value, booking_action:document.querySelector('input[name=bact]:checked').value}; }
+const who=()=>{const s=$('owner'); return s.options[s.selectedIndex]?s.options[s.selectedIndex].text:'';};
+$('reqBtn').onclick=async()=>{
+  const btn=$('reqBtn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>Sending…'; $('errB').textContent='';
+  try{ const j=await api({action:'request_booking',deal_id:cur.deal_id,...formData(),who:who()});
+    if(j.error) throw new Error(j.error);
+    if((j.missing||[]).length){ $('errB').textContent='Still needed: '+j.missing.join(', '); return; }
+    showDeal(j); $('statusCard').scrollIntoView({behavior:'smooth'}); }
+  catch(e){ if(e.message!=='login') $('errB').textContent=e.message; }
+  finally{ btn.disabled=false; btn.textContent='Request booking'; }
+};
+function getPin(){ try{return localStorage.getItem('ix_approver_pin')||''}catch(e){return ''} }
+async function approveNow(pin, withForm){
+  const btn=withForm?$('apprBtn'):$('apprBtn2'); const old=btn?btn.innerHTML:''; if(btn){btn.disabled=true; btn.innerHTML='<span class="spin"></span>Booking… (up to a minute)';}
+  $('errB').textContent='';
+  try{ const j=await api({action:'approve',deal_id:cur.deal_id,pin,...(withForm?formData():{})});
+    if(j.error) throw new Error(j.error);
+    if(j.pin_error){ try{localStorage.removeItem('ix_approver_pin')}catch(e){} if(!withForm) openBook(cur); $('pinRow').classList.remove('hidden'); $('pin').value=''; $('pin').focus(); $('errB').textContent=j.pin_error; return; }
+    try{localStorage.setItem('ix_approver_pin',pin)}catch(e){}
+    showDeal(j); $('statusCard').scrollIntoView({behavior:'smooth'}); }
+  catch(e){ if(e.message!=='login') $('errB').textContent=e.message; }
+  finally{ if(btn&&document.body.contains(btn)){btn.disabled=false; btn.innerHTML=old;} }
+}
+$('apprBtn').onclick=()=>{ const p=getPin(); if(p) approveNow(p,true); else { $('pinRow').classList.remove('hidden'); $('pin').focus(); } };
+$('pinGo').onclick=()=>{ const p=$('pin').value.trim(); if(!p){$('errB').textContent='Enter your approver PIN.';return;} approveNow(p,true); };
+$('pin').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); $('pinGo').click();} });
+function renderStatus(v){
+  clearInterval(poll); const box=$('statusOut'); let h='';
+  if(v.bol && !/^FAILED|^NOT BOOKED|^Waiting/.test(v.status||'')){
+    h=`<div class="status done"><b>Booked.</b> BOL # ${esc(v.bol)}${v.pickup_no?` · Pickup # ${esc(v.pickup_no)}`:''}${v.pro?` · PRO ${esc(v.pro)}`:''}<br><small>${esc(v.status)}</small><br><small>The BOL and labels are in the deal's attachments.</small></div>`;
+  } else if(v.approval==='Pending' && v.action){
+    h=`<div class="status wait"><b>Waiting for approval</b> (${esc(v.action)}). ${esc((v.approvers||[]).join(' or '))} has a task to approve it.<br><small>${esc(v.status)}</small></div>
+       <div class="row"><button class="btn btn-navy" id="apprBtn2">Approver: approve and book</button></div>`;
+    poll=setInterval(async()=>{ try{ const j=await api({action:'deal',deal_id:v.deal_id}); if(j.status!==v.status||j.bol!==v.bol) showDeal(j); }catch(e){} },20000);
+  } else if(/^FAILED|^NOT BOOKED/.test(v.status||'')){
+    h=`<div class="status bad"><b>Not booked.</b> ${esc(v.status)}</div>`;
+  } else if((v.status||'').startsWith('Working')){
+    h=`<div class="status wait"><span class="spin"></span>Booking in progress…</div>`;
+    poll=setInterval(async()=>{ try{ const j=await api({action:'deal',deal_id:v.deal_id}); if(j.status!==v.status) showDeal(j); }catch(e){} },15000);
+  }
+  box.innerHTML=h; $('statusCard').classList.toggle('hidden',!h);
+  if($('apprBtn2')) $('apprBtn2').onclick=()=>{ const p=getPin(); if(p) approveNow(p,false); else { openBook(cur); $('pinRow').classList.remove('hidden'); $('pin').focus(); } };
+}
+
+// Pricing usually runs from HubSpot's "deal created" signal, so the deal can come back before its prices: keep checking.
+function waitForPrice(v, extra){
+  showDeal(v, `<div class="status wait" style="margin-top:8px"><span class="spin"></span>Pricing with accuFRATE… usually under a minute. This page fills in by itself.</div>`+extra);
+  let n=0; clearInterval(poll);
+  poll=setInterval(async()=>{ n++;
+    try{ const j=await api({action:'deal',deal_id:v.deal_id});
+      if(!j.error && ((j.options||[]).length || j.route)){ clearInterval(poll);
+        const msg=(j.options||[]).length?'':(j.route==='Missing information'?`<p style="margin-top:8px" class="warn">Missing information: ${esc(j.missing||j.route_reason)}</p>`
+          :`<p style="margin-top:8px">Route: ${esc(j.route)}. ${esc(j.route_reason)}</p>`);
+        showDeal(j, msg+extra); return; } }catch(e){}
+    if(n>=24){ clearInterval(poll); $('doneOut').insertAdjacentHTML('beforeend','<p class="warn" style="margin-top:8px">Still pricing after 4 minutes. Check the deal in HubSpot, or open it later from Book a quote.</p>'); }
+  },10000);
+}
+
+// ---------------------------------------------------------------- tabs + Book a quote list
+function setTab(t){
+  $('tabNew').classList.toggle('on',t==='new'); $('tabBook').classList.toggle('on',t==='book'); closeDeal();
+  $('quotesCard').classList.toggle('hidden',t!=='book'); $('step1').classList.toggle('hidden',t!=='new'); $('step2').classList.add('hidden');
+  $('footNote').classList.toggle('hidden',t!=='new'); if(t==='book') loadQuotes($('qs').value.trim());
+}
+$('tabNew').onclick=()=>setTab('new'); $('tabBook').onclick=()=>setTab('book');
+async function loadQuotes(q){
+  $('qlist').innerHTML='<p class="note"><span class="spin"></span>Loading…</p>'; $('errQ').textContent='';
+  try{ const j=await api({action:'quotes',q});
+    $('qlist').innerHTML=(j.quotes||[]).map(x=>`<button class="qrow" data-id="${esc(x.deal_id)}"><span>${esc(x.dealname)}<br><small>${esc(x.created)}${x.amount?' · '+money(x.amount):''}${x.status?' · '+esc(x.status.slice(0,60)):''}</small></span><b style="color:var(--navy)">Open →</b></button>`).join('')||'<p class="note">No priced quotes found.</p>';
+    $('qlist').querySelectorAll('.qrow').forEach(b=>b.onclick=async()=>{ b.innerHTML='<span><span class="spin"></span>Opening…</span>';
+      try{ const v=await api({action:'deal',deal_id:b.dataset.id}); if(v.error) throw new Error(v.error); showDeal(v); }catch(e){ if(e.message!=='login') $('errQ').textContent=e.message; } });
+  }catch(e){ if(e.message!=='login') $('errQ').textContent=e.message; }
+}
+let qt; $('qs').oninput=()=>{ clearTimeout(qt); qt=setTimeout(()=>loadQuotes($('qs').value.trim()),400); };
+
+
+let hasPw=''; try{hasPw=localStorage.getItem('ix_pw')||''}catch(e){}
+if(!hasPw) askLogin('').then(loadOwners); else loadOwners();
+</script>
+</body>
+</html>

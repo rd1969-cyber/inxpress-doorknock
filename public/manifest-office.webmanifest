@@ -1,0 +1,16 @@
+{
+  "name": "InXpress Call Sheet",
+  "short_name": "Call Sheet",
+  "description": "Full 1st-meeting qualifying + disposition tool, straight into HubSpot.",
+  "start_url": "/qualify",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2E8B6A",
+  "theme_color": "#2E8B6A",
+  "icons": [
+    { "src": "office-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "office-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "office-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

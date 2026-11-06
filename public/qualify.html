@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Call Disposition Sheet — InXpress</title>
+<link rel="manifest" href="manifest-office.webmanifest">
+<meta name="theme-color" content="#2E8B6A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Call Sheet">
+<link rel="apple-touch-icon" href="office-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme: light; --ix-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--ix-font);font-size:14px;background:#f4f6f9;color:#222;}
+
+header{background:#1A3A5C;color:white;padding:calc(13px + env(safe-area-inset-top)) 20px 13px;display:flex;align-items:center;justify-content:space-between;}
+header h1{font-size:16px;font-weight:bold;line-height:1.2;}
+header h1 sup{font-size:10px;}
+.ix-logo{height:26px;width:auto;fill:#fff;display:block;}
+
+.container{max-width:860px;margin:0 auto;padding:14px;}
+
+.card{background:white;border-radius:8px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.card h2{font-size:14px;font-weight:bold;color:#1A3A5C;margin-bottom:10px;}
+.search-row{display:flex;gap:8px;}
+.search-row input{flex:1;padding:8px 12px;border:1px solid #ccc;border-radius:6px;font-size:14px;}
+.search-row input:focus{outline:none;border-color:#1A3A5C;}
+.results{margin-top:10px;}
+.result-item{padding:8px 12px;border:1px solid #ddd;border-radius:6px;margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.result-item:hover,.result-item.selected{background:#e8eef5;border-color:#1A3A5C;}
+.rname{font-weight:bold;color:#1A3A5C;font-size:13px;}
+.rsub{font-size:11px;color:#777;}
+
+.btn{padding:8px 16px;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-weight:bold;}
+.btn-navy{background:#1A3A5C;color:white;}
+.btn-navy:hover{background:#142d48;}
+.btn-teal{background:#2E8B6A;color:white;font-size:14px;padding:10px 24px;}
+.btn-teal:hover{background:#267a5c;}
+.btn-outline{background:white;color:#1A3A5C;border:1px solid #1A3A5C;}
+.btn-outline:hover{background:#e8eef5;}
+.btn-sm{padding:5px 10px;font-size:11px;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+
+.badge{background:#e8eef5;border:1px solid #1A3A5C;border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.badge-name{font-weight:bold;color:#1A3A5C;font-size:15px;}
+.badge-meta{font-size:12px;color:#555;margin-top:2px;}
+.hidden{display:none!important;}
+
+.meeting-bar{background:white;border-radius:8px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+.section{background:white;border-radius:8px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden;}
+.sec-head{padding:11px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:3px solid #1A3A5C;user-select:none;}
+.sec-head h3{font-size:13px;font-weight:bold;color:#1A3A5C;}
+.sec-toggle{font-size:16px;color:#1A3A5C;}
+.sec-body{padding:16px;display:none;}
+.sec-body.open{display:block;}
+
+.fg{margin-bottom:13px;}
+.fl{font-size:11px;font-weight:bold;color:#2E8B6A;margin-bottom:3px;display:block;}
+.fl .req{color:#c0392b;}
+.fh{font-size:11px;color:#999;margin-bottom:4px;font-style:italic;}
+.fg input[type=text],.fg input[type=number],.fg input[type=date],.fg input[type=datetime-local],.fg input[type=email],.fg input[type=tel],.fg select,.fg textarea{
+  width:100%;padding:7px 10px;border:1px solid #ccc;border-radius:5px;font-size:13px;font-family:var(--ix-font);}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#1A3A5C;}
+.fg textarea{min-height:68px;resize:vertical;}
+
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+.pill{display:flex;align-items:center;gap:4px;padding:5px 11px;border:1px solid #ccc;border-radius:20px;cursor:pointer;font-size:12px;user-select:none;}
+.pill:hover{border-color:#1A3A5C;background:#e8eef5;}
+.pill.on{border-color:#1A3A5C;background:#e8eef5;color:#1A3A5C;font-weight:bold;}
+.pill input{cursor:pointer;accent-color:#1A3A5C;}
+
+.checklist{list-style:none;}
+.checklist li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f0f0f0;font-size:13px;}
+.checklist li:last-child{border-bottom:none;}
+.checklist input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:#1A3A5C;}
+.checklist label{cursor:pointer;}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;}
+.tag-new{background:#e6f4ef;color:#2E8B6A;}
+.tag-exist{background:#e8eef5;color:#1A3A5C;}
+
+.spin{display:inline-block;width:13px;height:13px;border:2px solid #ccc;border-top-color:#1A3A5C;border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle;margin-right:5px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Qualification tracker */
+.qual-bar{background:white;border-radius:8px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:5px solid #ccc;}
+.qual-bar.qualified{border-left-color:#2E8B6A;}
+.qual-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.qual-head h3{font-size:13px;font-weight:bold;color:#1A3A5C;}
+.qual-status{font-size:13px;font-weight:bold;color:#888;}
+.qual-status.go{color:#2E8B6A;}
+.crit{display:flex;flex-wrap:wrap;gap:8px;}
+.crit-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;border:1px solid #ddd;background:#fafafa;font-size:12px;color:#666;}
+.crit-chip .dot{width:10px;height:10px;border-radius:50%;background:#ccc;flex:none;}
+.crit-chip.met{border-color:#2E8B6A;background:#e6f4ef;color:#1A3A5C;font-weight:bold;}
+.crit-chip.met .dot{background:#2E8B6A;}
+.crit-chip .rtag{font-size:9px;font-weight:bold;color:#c0392b;letter-spacing:.5px;}
+
+/* Disposition */
+.dispo{background:white;border-radius:8px;padding:16px;margin-top:14px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.dispo h3{font-size:13px;font-weight:bold;color:#1A3A5C;margin-bottom:4px;}
+.dispo .fh{margin-bottom:12px;}
+.dispo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.dispo-btn{padding:14px 8px;border:2px solid #ddd;border-radius:8px;background:white;cursor:pointer;text-align:center;font-size:12px;font-weight:bold;color:#444;transition:all .12s;}
+.dispo-btn .ico{font-size:20px;display:block;margin-bottom:4px;}
+.dispo-btn:hover:not(:disabled){border-color:#1A3A5C;background:#e8eef5;}
+.dispo-btn:disabled{opacity:.4;cursor:not-allowed;}
+.dispo-btn.info-only{display:block;width:100%;background:#1A3A5C;color:#fff;border-color:#1A3A5C;font-size:13px;}
+.dispo-btn.info-only:hover:not(:disabled){background:#16314e;border-color:#16314e;}
+.dispo-btn.info-only .ico{display:inline;margin:0 6px 0 0;font-size:16px;}
+.dispo-btn.d-sql{border-color:#2E8B6A;color:#2E8B6A;}
+.dispo-btn.d-sql:hover:not(:disabled){background:#e6f4ef;}
+.dispo-btn.d-appt{border-color:#1A3A5C;color:#1A3A5C;}
+.dispo-btn.d-dq{border-color:#c0392b;color:#c0392b;}
+.dispo-btn.d-dq:hover:not(:disabled){background:#fbeae8;}
+
+.save-msg{margin-top:14px;font-size:13px;color:#666;min-height:18px;}
+.save-msg.ok{color:#2E8B6A;font-weight:bold;}
+.save-msg.err{color:#c0392b;font-weight:bold;}
+.save-msg.saving{color:#888;}
+
+.email-box{margin-top:14px;border:1px solid #1A3A5C;border-radius:8px;overflow:hidden;}
+.email-box .eb-head{background:#1A3A5C;color:white;padding:8px 14px;font-size:12px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;}
+.email-box textarea{width:100%;border:none;padding:12px 14px;font-size:13px;font-family:var(--ix-font);min-height:220px;resize:vertical;}
+.email-box textarea:focus{outline:none;}
+
+.cfg-note{font-size:11px;color:#b06a00;background:#fff7e6;border:1px solid #ffe1a6;border-radius:6px;padding:8px 12px;margin-bottom:12px;}
+.cfg-note code{background:#fff;padding:1px 5px;border-radius:3px;border:1px solid #ffe1a6;}
+/* login overlay (web-deploy only) */
+.overlay{position:fixed;inset:0;background:#1A3A5C;color:#fff;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.overlay.hidden{display:none;}
+.overlay h2{font-size:18px;margin-bottom:6px;}
+.overlay p{font-size:13px;opacity:.85;margin-bottom:18px;text-align:center;}
+.overlay input{max-width:300px;width:100%;text-align:center;color:#222;padding:13px 14px;border:1.5px solid #ccc;border-radius:10px;font-size:16px;font-family:var(--ix-font);}
+.overlay button{max-width:300px;width:100%;margin-top:12px;background:#fff;color:#1A3A5C;border:none;border-radius:10px;font-weight:700;font-size:15px;padding:14px 16px;cursor:pointer;font-family:var(--ix-font);}
+.overlay .err{color:#ffb3a8;font-size:12px;margin-top:10px;min-height:14px;}
+</style>
+</head>
+<body>
+
+<!-- Login (only when deployed as a web app; skipped inside Cowork) -->
+<div class="overlay hidden" id="login">
+  <h2>InXpress Sales Tools</h2>
+  <p>Enter the team password to use this on this device.<br>You'll only do this once.</p>
+  <input type="password" id="pwInput" placeholder="Team password" autocomplete="off">
+  <button onclick="submitLogin()">Continue</button>
+  <div class="err" id="pwErr"></div>
+</div>
+
+<header>
+  <div>
+    <div style="font-size:10px;opacity:.7;margin-bottom:3px;letter-spacing:1px;">SALES</div>
+    <h1>Call Disposition Sheet</h1>
+  </div>
+  <!-- Official InXpress white logo (vector, from Brand Reference Guidelines) -->
+  <svg class="ix-logo" viewBox="0 0 141.73 29.12" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="InXpress">
+    <path d="M48.35,4.86,49,4.4C52.84,1.39,59.14.66,63.57.56c-5.66-.95-15-1.36-20.94,4.37l-.28.26c-.46.42-1.36,1.23-2.06,1.95l-1,1.08-.5.53L36,3.07H30.25L35,11.73,24.54,21h6.2l6.16-6,2.81,6h5.76l-4.82-9,.27-.26S43,9.84,45,7.91l1.16-1.13A16.14,16.14,0,0,1,48.35,4.86Z"/>
+    <polygon points="5.03 2.91 0 20.98 4.69 20.98 9.72 2.91 5.03 2.91"/>
+    <path d="M20.92,7.85c4.16,0,5.78,1.57,4.92,4.67L23.46,21H18.87l1.87-6.64c.58-2.07.23-2.77-2.9-2.77-2.68,0-3.94.85-4.55,3L11.5,21H6.91l2.41-8.7a6,6,0,0,1,5.81-4.43h5.79Z"/>
+    <path d="M104.61,16.79v.05c-.23.83.5,1.15,2.19,1.15h3.34c1.29,0,1.91-.25,2.12-1s-.35-1-1.61-1l-4.52-.08c-4.09-.07-5.84-.82-5-3.91s3.09-4.14,7.39-4.14h5.21c3.32,0,4.55,1.19,3.85,3.79H113c-.09-.5-.79-.75-2.08-.75h-3.2c-1.11,0-1.71.17-1.89.82s.43.83,1.92.85l5.58.07c3.24.06,4.38,1.28,3.6,4.07C116,20.06,114,21,110,21h-4.67c-4.74,0-6.52-.72-5.58-4.24Z"/>
+    <path d="M122.89,16.79l0,.05c-.22.83.5,1.15,2.19,1.15h3.35c1.29,0,1.9-.25,2.12-1s-.35-1-1.61-1l-4.52-.08c-4.09-.07-5.85-.82-5-3.91s3.1-4.14,7.39-4.14H132c3.32,0,4.55,1.19,3.85,3.79h-4.59c-.08-.5-.78-.75-2.07-.75H126c-1.12,0-1.72.17-1.9.82s.44.83,1.92.85l5.59.07c3.24.06,4.38,1.28,3.6,4.07-.94,3.34-2.95,4.31-6.94,4.31h-4.67c-4.74,0-6.52-.72-5.58-4.24Z"/>
+    <path d="M77.48,12.75h4.31c1-3.57,0-4.91-3.5-4.91H73.56a6,6,0,0,0-5.81,4.43L65.35,21h4.59l2-7c.41-1.47,1.06-2.37,3.56-2.37C76.69,11.66,77.35,12,77.48,12.75Z"/>
+    <path d="M91.06,18H89.12c-1.91,0-2.57-.57-2.15-2.07,0-.1.09-.22.12-.35H98.61l.76-2.74c.91-3.22-.66-5-4.51-5H90.57c-3.82,0-6.4,1.77-7.3,5l-1,3.49C81.45,19.34,83,21,86.9,21h4.27c4.07,0,6.2-1.15,7.07-4.24H93.87C93.27,17.91,92.53,18,91.06,18ZM87.9,12.71C88.25,11.43,89.16,11,91,11h1.89c1.81,0,2.47.4,2.11,1.68v0H87.88Z"/>
+    <path d="M60.32,7.89H54.57a6,6,0,0,0-5.76,4.42L44.17,29.12h4.59L51,21h5.69c4.62,0,7-1.29,7.9-4.44l1.23-4.39C66.74,9,65.11,7.89,60.32,7.89Zm.53,5.71-.49,1.75c-.44,1.6-1.47,2.17-3.51,2.17H51.93l1-3.95c.45-1.59,1.45-2.14,3.51-2.14h2.08C60.56,11.43,61.31,11.93,60.85,13.6Z"/>
+    <path d="M141,10.84a2.31,2.31,0,0,1-3.29,0,2.33,2.33,0,0,1,0-3.29,2.34,2.34,0,0,1,4,1.64A2.24,2.24,0,0,1,141,10.84Zm-3.06-3.07a2,2,0,0,0-.59,1.42,2,2,0,0,0,.58,1.43,2,2,0,0,0,2.84-2.85,2,2,0,0,0-2.83,0Zm1.37.13a2,2,0,0,1,.7.1.63.63,0,0,1,.39.64.56.56,0,0,1-.25.51.8.8,0,0,1-.37.12.66.66,0,0,1,.58.65v.19a1.28,1.28,0,0,0,0,.19.31.31,0,0,0,0,.13l0,0H140v-.34a.62.62,0,0,0-.24-.58,1,1,0,0,0-.5-.08h-.36v1h-.45V7.9Zm.49.41a1.12,1.12,0,0,0-.55-.1h-.39v.93h.41a1.16,1.16,0,0,0,.43-.06.45.45,0,0,0,.1-.77Z"/>
+  </svg>
+</header>
+
+<div class="container">
+
+  <!-- ============================================================= -->
+  <!--  CONFIG — edit these once. Robert's meeting link goes here.    -->
+  <!-- ============================================================= -->
+  <script>
+  const CFG = {
+    TOOL: 'mcp__1abe7b1e-6875-49b2-82be-4306f3fe11fb',
+
+    // Robert's HubSpot meeting/booking link (used for the appointment + thank-you email)
+    MEETING_LINK: 'https://meetings.hubspot.com/robert-daigle2',
+
+    // Industry dropdown options (value = valid HubSpot `industry` value) → "Nature of business"
+    INDUSTRIES: [
+      ['Manufacturing','Manufacturing'],['Wholesale','Wholesale'],['RETAIL','Retail'],['eCommerce','eCommerce'],
+      ['CONSUMER_GOODS','Consumer Goods'],['CONSUMER_ELECTRONICS','Consumer Electronics'],
+      ['FOOD_BEVERAGES','Food & Beverages'],['FOOD_PRODUCTION','Food Production'],['AUTOMOTIVE','Automotive'],
+      ['BUILDING_MATERIALS','Building Materials'],['MACHINERY','Machinery'],['APPAREL_FASHION','Apparel & Fashion'],
+      ['CHEMICALS','Chemicals'],['PLASTICS','Plastics'],['PHARMACEUTICALS','Pharmaceuticals'],
+      ['MEDICAL_DEVICES','Medical Devices'],['LOGISTICS_AND_SUPPLY_CHAIN','Logistics & Supply Chain'],
+      ['IMPORT_AND_EXPORT','Import & Export'],['PACKAGING_AND_CONTAINERS','Packaging & Containers'],
+      ['FURNITURE','Furniture'],['SPORTING_GOODS','Sporting Goods'],['COSMETICS','Cosmetics'],['PRINTING','Printing'],
+      ['PAPER_FOREST_PRODUCTS','Paper & Forest Products'],['ELECTRICAL_ELECTRONIC_MANUFACTURING','Electrical/Electronic Mfg'],
+      ['MECHANICAL_OR_INDUSTRIAL_ENGINEERING','Mechanical/Industrial Eng'],['HEALTH_WELLNESS_AND_FITNESS','Health, Wellness & Fitness'],
+      ['CONSTRUCTION','Construction'],['Pet Products','Pet Products'],['Household Goods','Household Goods'],
+      ['Office Products','Office Products'],['Toys & Games','Toys & Games'],['Other','Other']
+    ],
+
+    PIPELINE: '145577884',           // Deal Pipeline
+    MANAGER_OWNER: '1640189485',     // Robert Daigle — gets the "appointment booked" task
+
+    STAGES: {                        // Deal Pipeline stages
+      sql:        '247096093',       // Sales Qualified Lead
+      appointment:'247096094',       // First Meeting Scheduled
+      nurture:    '1364899204',      // Nurture
+      disqualify: '247096100',       // Disqualified
+      prospecting:'1334197903'       // Prospecting
+    },
+    LIFECYCLE: {                     // company + contact lifecyclestage (kept in sync w/ deal)
+      sql:        'salesqualifiedlead',
+      appointment:'salesqualifiedlead',
+      nurture:    '1373867915',      // Nurture
+      disqualify: '1326067635',      // Disqualified
+      prospecting:'1349182853'       // Lead
+    },
+    LEADSTATUS: {                    // hs_lead_status (where it applies)
+      nurture:    'BAD_TIMING',
+      disqualify: 'UNQUALIFIED',
+      prospecting:'CONNECTED'
+    },
+    REPS: [
+      { id:'1640189485', name:'Robert Daigle' },
+      { id:'77013635',   name:'Allan Selda' },
+      { id:'79374585',   name:'Michae Aquino' },
+      { id:'94846576',   name:'Fahad Yusuf' }
+    ]
+  };
+  </script>
+
+  <!-- Search Card -->
+  <div class="card" id="searchCard">
+    <h2>🔍 Find or Create Company in HubSpot</h2>
+    <div class="fg" style="margin-bottom:12px;">
+      <span class="fl">Rep on this call <span class="req">*</span></span>
+      <select id="fRep"><option value="">— Select your name —</option></select>
+    </div>
+    <div class="search-row">
+      <input id="searchInput" type="text" placeholder="Type company name…" />
+      <button class="btn btn-navy" onclick="doSearch()">Search</button>
+      <button class="btn btn-outline" onclick="doCreateNew()">+ New</button>
+    </div>
+    <div class="results" id="searchResults"></div>
+  </div>
+
+  <!-- Selected Company Badge -->
+  <div class="badge hidden" id="badge">
+    <div>
+      <div class="badge-name" id="badgeName"></div>
+      <div class="badge-meta" id="badgeMeta"></div>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="resetSearch()">Change</button>
+  </div>
+
+  <!-- Form Area -->
+  <div id="formArea" class="hidden">
+
+    <div class="cfg-note" id="cfgNote">
+      ⚙️ Heads-up: the meeting link is still a placeholder. Edit <code>CFG.MEETING_LINK</code> at the top of this file before booking appointments.
+    </div>
+
+    <!-- Meeting Info Row -->
+    <div class="meeting-bar">
+      <div class="grid3">
+        <div class="fg" style="margin-bottom:0">
+          <span class="fl">Date</span>
+          <input type="date" id="fDate" />
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <span class="fl">Invoices obtained? <span class="fh" style="display:inline;">(trial request)</span></span>
+          <div class="pills" style="margin-top:6px;">
+            <label class="pill" id="pInvY"><input type="radio" name="invoices" value="true" onchange="syncPills('invoices',['pInvY','pInvN'])"> Yes</label>
+            <label class="pill" id="pInvN"><input type="radio" name="invoices" value="false" onchange="syncPills('invoices',['pInvY','pInvN'])"> No</label>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <span class="fl"># of Locations</span>
+          <input type="text" id="fLocations" placeholder="e.g. 3 (HQ + 2 warehouses)" oninput="updateQual()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- QUALIFICATION TRACKER -->
+    <div class="qual-bar" id="qualBar">
+      <div class="qual-head">
+        <h3>Qualification — 3 required to move to Sales Qualified</h3>
+        <div class="qual-status" id="qualStatus">0 / 3 required</div>
+      </div>
+      <div class="crit" id="critRow">
+        <div class="crit-chip" id="critDM"><span class="dot"></span> Decision maker <span class="rtag">REQ</span></div>
+        <div class="crit-chip" id="critVol"><span class="dot"></span> Volume <span class="rtag">REQ</span></div>
+        <div class="crit-chip" id="critCarrier"><span class="dot"></span> Who they use <span class="rtag">REQ</span></div>
+        <div class="crit-chip" id="critNature"><span class="dot"></span> Nature of business</div>
+        <div class="crit-chip" id="critLoc"><span class="dot"></span> # of locations</div>
+      </div>
+    </div>
+
+    <!-- 0. Decision Maker (Contact) -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Decision Maker</h3><span class="sec-toggle">▾</span>
+      </div>
+      <div class="sec-body open">
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">First name <span class="req">*</span></span>
+            <span class="fh">Who makes the shipping decision?</span>
+            <input type="text" id="fDMFirst" placeholder="First" oninput="updateQual()" />
+          </div>
+          <div class="fg">
+            <span class="fl">Last name</span>
+            <input type="text" id="fDMLast" placeholder="Last" />
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Title / Role</span>
+            <input type="text" id="fDMTitle" placeholder="e.g. Operations Manager, Owner" />
+          </div>
+          <div class="fg">
+            <span class="fl">Phone</span>
+            <input type="tel" id="fDMPhone" placeholder="902 555 0142" />
+          </div>
+        </div>
+        <div class="fg">
+          <span class="fl">Email</span>
+          <span class="fh">Needed to send the thank-you note</span>
+          <input type="email" id="fDMEmail" placeholder="name@company.com" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. Relationship History -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Relationship History &amp; Current Provider</h3><span class="sec-toggle">▾</span>
+      </div>
+      <div class="sec-body open">
+        <div class="fg">
+          <span class="fl">Nature of business (Industry)</span>
+          <span class="fh">Maps to the HubSpot Industry field</span>
+          <select id="fNature" onchange="updateQual()"><option value="">— Select industry —</option></select>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Current Carrier — Parcel <span class="req">*</span></span>
+            <span class="fh">Who are they shipping with?</span>
+            <select id="fCarrierParcel" onchange="updateQual()">
+              <option value="">— Select —</option>
+              <option>UPS</option><option>FedEx</option><option>DHL</option>
+              <option>Purolator</option><option>Canpar</option>
+              <option value="Third Party Portal">Third Party Portal</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg">
+            <span class="fl">Current Carrier — Freight</span>
+            <span class="fh">LTL/FTL carriers (Canada) — check all that apply</span>
+            <!-- values must match HubSpot multiple-checkbox property current_carrier__freight__canada -->
+            <div class="pills" id="grpFreight" onchange="updateQual()">
+              <label class="pill"><input type="checkbox" value="Day and Ross"> Day and Ross</label>
+              <label class="pill"><input type="checkbox" value="Manitoulin"> Manitoulin</label>
+              <label class="pill"><input type="checkbox" value="Maritime Ontario"> Maritime Ontario</label>
+              <label class="pill"><input type="checkbox" value="Kindersley"> Kindersley</label>
+              <label class="pill"><input type="checkbox" value="Overland"> Overland</label>
+              <label class="pill"><input type="checkbox" value="TransForce"> TransForce</label>
+              <label class="pill"><input type="checkbox" value="CH Robinson"> CH Robinson</label>
+              <label class="pill"><input type="checkbox" value="DHL Global Forwarding"> DHL Global Fwd</label>
+              <label class="pill"><input type="checkbox" value="Accufrate"> Accufrate</label>
+              <label class="pill"><input type="checkbox" value="JP Cargo"> JP Cargo</label>
+              <label class="pill"><input type="checkbox" value="QuickX"> QuickX</label>
+              <label class="pill"><input type="checkbox" value="APEX"> APEX</label>
+              <label class="pill"><input type="checkbox" value="WCE"> WCE</label>
+              <label class="pill"><input type="checkbox" value="Comox"> Comox</label>
+              <label class="pill"><input type="checkbox" value="MaltaCourt"> MaltaCourt</label>
+              <label class="pill"><input type="checkbox" value="Laneway Logistics"> Laneway Logistics</label>
+              <label class="pill"><input type="checkbox" value="One Reimer"> One Reimer</label>
+              <label class="pill"><input type="checkbox" value="Bellore"> Bellore</label>
+              <label class="pill"><input type="checkbox" value="Midland"> Midland</label>
+              <label class="pill"><input type="checkbox" value="Armour"> Armour</label>
+              <label class="pill"><input type="checkbox" value="Other"> Other</label>
+            </div>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Projected Weekly Margin</span>
+            <span class="fh">Your estimated margin, $ per week</span>
+            <input type="number" id="fWeeklyMargin" placeholder="e.g. 450" min="0" step="1" />
+          </div>
+          <div class="fg">
+            <span class="fl">Parcel Volume (shipments/week) <span class="req">*</span></span>
+            <input type="number" id="fParcelVol" placeholder="e.g. 50" min="0" oninput="updateQual()" />
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Freight Volume (shipments/week)</span>
+            <input type="text" id="fFreightVol" placeholder="e.g. 10 LTL/week" oninput="updateQual()" />
+          </div>
+          <div class="fg">
+            <span class="fl">Committed to current provider?</span>
+            <span class="fh">Contract, relationship, or special rates?</span>
+            <input type="text" id="fCommitted" placeholder="Notes…" />
+          </div>
+        </div>
+        <div class="fg">
+          <span class="fl">Issues with Current Carrier</span>
+          <span class="fh">Pain points — pricing, service, damages, tracking, visibility?</span>
+          <textarea id="fIssues" placeholder="Collect pain points here…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Inbound Shipping -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Inbound Shipping</h3><span class="sec-toggle">▸</span>
+      </div>
+      <div class="sec-body">
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Do they control inbound shipping costs?</span>
+            <div class="pills" style="margin-top:6px;">
+              <label class="pill" id="pPayY"><input type="radio" name="payShip" value="Yes" onchange="syncPills('payShip',['pPayY','pPayN'])"> Yes — they control it</label>
+              <label class="pill" id="pPayN"><input type="radio" name="payShip" value="No" onchange="syncPills('payShip',['pPayY','pPayN'])"> No — vendor controls</label>
+            </div>
+          </div>
+          <div class="fg">
+            <span class="fl">Inbound Volume (shipments/week)</span>
+            <input type="text" id="fInboundVol" placeholder="e.g. 20/week" />
+          </div>
+        </div>
+        <div class="fg">
+          <span class="fl">Shipping Modes Used</span>
+          <span class="fh">Check all that apply</span>
+          <div class="pills" id="grpModes">
+            <label class="pill"><input type="checkbox" value="Small Parcel Domestic (Canada Only/)"> Parcel Domestic</label>
+            <label class="pill"><input type="checkbox" value="Small Parcel International (US and Other)"> Parcel Intl (US+)</label>
+            <label class="pill"><input type="checkbox" value="LTL (palletized freight)"> LTL</label>
+            <label class="pill"><input type="checkbox" value="Full Truck loads"> FTL</label>
+            <label class="pill"><input type="checkbox" value="Air Cargo"> Air Cargo</label>
+            <label class="pill"><input type="checkbox" value="Ocean Cargo"> Ocean FCL</label>
+            <label class="pill"><input type="checkbox" value="Ocean Freight"> Ocean LCL</label>
+          </div>
+        </div>
+        <div class="fg">
+          <span class="fl">Vendor Invoices — Shipping &amp; Handling?</span>
+          <span class="fh">Is S&amp;H a separate line item? Do they know what they're being charged?</span>
+          <input type="text" id="fVendorInv" placeholder="Notes…" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Order Processing & Ops -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Order Processing &amp; Shipping Operations</h3><span class="sec-toggle">▸</span>
+      </div>
+      <div class="sec-body">
+        <div class="fg">
+          <span class="fl">How do they process their shipments?</span>
+          <span class="fh">Platform, ERP, manual — how does an order become a label?</span>
+          <textarea id="fHowProcess" placeholder="e.g. Manual on UPS.com, Shopify + ShipStation, NetSuite integration…"></textarea>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">How do they choose carrier/service?</span>
+            <input type="text" id="fHowChoose" placeholder="e.g. Always cheapest, always Ground…" />
+          </div>
+          <div class="fg">
+            <span class="fl">What products do they ship?</span>
+            <input type="text" id="fProducts" placeholder="e.g. Electronics, auto parts, documents…" />
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Services used (check all)</span>
+            <div class="pills" id="grpServices">
+              <label class="pill"><input type="checkbox" value="Air"> Air</label>
+              <label class="pill"><input type="checkbox" value="Ground"> Ground</label>
+              <label class="pill"><input type="checkbox" value="International"> International</label>
+            </div>
+          </div>
+          <div class="fg">
+            <span class="fl">International shipping?</span>
+            <div class="pills" style="margin-top:6px;">
+              <label class="pill" id="pIntlY"><input type="radio" name="intl" value="true" onchange="syncPills('intl',['pIntlY','pIntlN'])"> Yes</label>
+              <label class="pill" id="pIntlN"><input type="radio" name="intl" value="false" onchange="syncPills('intl',['pIntlY','pIntlN'])"> No</label>
+            </div>
+          </div>
+        </div>
+        <div class="fg">
+          <span class="fl">Other shipment details</span>
+          <textarea id="fOtherShip" placeholder="Destinations, supplies needed, insurance, special requirements…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Accounting -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Accounting &amp; Invoicing</h3><span class="sec-toggle">▸</span>
+      </div>
+      <div class="sec-body">
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Multiple invoices / cost allocation?</span>
+            <span class="fh">Separate by dept, PO#, carrier? Internal upcharge?</span>
+            <input type="text" id="fMultiInv" placeholder="Notes…" />
+          </div>
+          <div class="fg">
+            <span class="fl">Billing process</span>
+            <span class="fh">How often invoiced? Payment method &amp; terms?</span>
+            <input type="text" id="fBilling" placeholder="e.g. Net 30, weekly invoice, credit card…" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Customer Service & Exec -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Customer Service &amp; Executive Priorities</h3><span class="sec-toggle">▸</span>
+      </div>
+      <div class="sec-body">
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">How are shipping issues handled?</span>
+            <textarea id="fCSR" placeholder="What happens when a package is lost/damaged? Who owns it?"></textarea>
+          </div>
+          <div class="fg">
+            <span class="fl">Executive focus areas</span>
+            <span class="fh">Check what matters most to decision-maker</span>
+            <div class="pills" id="grpExec">
+              <label class="pill"><input type="checkbox" value="Pricing"> Pricing</label>
+              <label class="pill"><input type="checkbox" value="Reporting"> Reporting</label>
+              <label class="pill"><input type="checkbox" value="Efficiency"> Efficiency</label>
+              <label class="pill"><input type="checkbox" value="Budgeting/Forecasting"> Budgeting</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Objections & Value Adds -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Objections, Value Adds &amp; Notes</h3><span class="sec-toggle">▸</span>
+      </div>
+      <div class="sec-body">
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Objections raised</span>
+            <textarea id="fObjections" placeholder="Price, loyalty to current carrier, no pain felt, timing…"></textarea>
+          </div>
+          <div class="fg">
+            <span class="fl">Value adds discussed</span>
+            <textarea id="fValueAdds" placeholder="Technology platform, service quality, savings, reporting…"></textarea>
+          </div>
+        </div>
+        <div class="fg" id="priorNotesWrap" style="display:none;">
+          <span class="fl">Previously saved in HubSpot (read-only)</span>
+          <span class="fh">Captured on earlier calls — for reference; not re-saved</span>
+          <textarea id="fPriorNotes" readonly style="background:#f7f8fa;min-height:90px;"></textarea>
+        </div>
+        <div class="fg">
+          <span class="fl">Additional Notes</span>
+          <textarea id="fNotes" style="min-height:80px;" placeholder="Anything else worth capturing from this call…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Ending checklist -->
+    <div class="section">
+      <div class="sec-head" onclick="toggle(this)">
+        <h3>Ending the Call — Checklist</h3><span class="sec-toggle">▸</span>
+      </div>
+      <div class="sec-body">
+        <ul class="checklist">
+          <li><input type="checkbox" id="ck1"><label for="ck1">Recap benefits delivered</label></li>
+          <li><input type="checkbox" id="ck2"><label for="ck2">Requested 30 days of invoices</label></li>
+          <li><input type="checkbox" id="ck3"><label for="ck3">Follow-up meeting scheduled</label></li>
+          <li><input type="checkbox" id="ck4"><label for="ck4">Trial close attempted</label></li>
+          <li><input type="checkbox" id="ck5"><label for="ck5">Implementation strategy discussed</label></li>
+          <li><input type="checkbox" id="ck6"><label for="ck6">Tour offered (if applicable)</label></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Appointment (shown only when booking) -->
+    <div class="section hidden" id="apptSection">
+      <div class="sec-head" onclick="toggle(this)" style="border-bottom-color:#2E8B6A;">
+        <h3>📅 Appointment Details</h3><span class="sec-toggle">▾</span>
+      </div>
+      <div class="sec-body open">
+        <div class="grid2">
+          <div class="fg">
+            <span class="fl">Appointment date &amp; time <span class="req">*</span></span>
+            <input type="datetime-local" id="fApptWhen" />
+          </div>
+          <div class="fg">
+            <span class="fl">Meeting link (from config)</span>
+            <input type="text" id="fApptZoom" readonly />
+          </div>
+        </div>
+        <div class="fh">A HubSpot meeting will be created with this meeting link, and a task will notify Robert Daigle.</div>
+      </div>
+    </div>
+
+    <!-- DISPOSITION -->
+    <div class="dispo">
+      <h3>Save this call</h3>
+      <button class="dispo-btn info-only" id="dbInfo" onclick="updateInfoOnly()">
+        <span class="ico">💾</span>Update Info Only — keep their current status</button>
+      <div class="fh" style="text-align:center;margin:8px 0;">Saves your edits to the company &amp; decision-maker contact. Does <b>not</b> change lifecycle/status or create a deal — use this for existing customers.</div>
+      <div class="fh" style="text-align:center;margin:12px 0 8px;color:#888;font-weight:bold;">— or set a disposition below (these <u>do</u> change their status) —</div>
+      <div class="dispo-grid">
+        <button class="dispo-btn d-sql"  id="dbSql"  onclick="runDisposition('sql')" disabled>
+          <span class="ico">✅</span>Sales Qualified</button>
+        <button class="dispo-btn d-appt" id="dbAppt" onclick="bookAppointment()" disabled>
+          <span class="ico">📅</span>Book Appointment</button>
+        <button class="dispo-btn"        id="dbNur"  onclick="runDisposition('nurture')">
+          <span class="ico">🌱</span>Nurture</button>
+        <button class="dispo-btn d-dq"   id="dbDq"   onclick="runDisposition('disqualify')">
+          <span class="ico">🚫</span>Disqualify</button>
+        <button class="dispo-btn"        id="dbPros" onclick="runDisposition('prospecting')">
+          <span class="ico">🔄</span>Keep Prospecting</button>
+      </div>
+      <div class="save-msg" id="saveMsg"></div>
+
+      <!-- Thank-you email -->
+      <div class="email-box hidden" id="emailBox">
+        <div class="eb-head">
+          <span>✉️ Thank-you note — review &amp; send to the prospect</span>
+          <button class="btn btn-outline btn-sm" onclick="copyEmail()" style="background:transparent;color:white;border-color:white;">Copy</button>
+        </div>
+        <textarea id="emailText"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /formArea -->
+</div><!-- /container -->
+
+<script>
+let company = null;   // { id, name, isNew }
+
+// ---- init ----
+(function init(){
+  const sel = document.getElementById('fRep');
+  CFG.REPS.forEach(r => { const o=document.createElement('option'); o.value=r.id; o.textContent=r.name; sel.appendChild(o); });
+  const ind = document.getElementById('fNature');
+  CFG.INDUSTRIES.forEach(([val,label]) => { const o=document.createElement('option'); o.value=val; o.textContent=label; ind.appendChild(o); });
+  document.getElementById('fDate').value = new Date().toISOString().slice(0,10);
+  document.getElementById('fApptZoom').value = CFG.MEETING_LINK;
+})();
+
+// ---- helpers ----
+function hasCowork(){ return !!(window.cowork && window.cowork.callMcpTool); } // Cowork vs deployed web app
+// data layer: Cowork bridge OR our /api/hs backend (password-gated when deployed on the web)
+async function mcp(tool, args){
+  if(hasCowork()) return window.cowork.callMcpTool(`${CFG.TOOL}__${tool}`, args);
+  const res = await fetch('api/hs', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ tool, args, password: localStorage.getItem('ix_pw')||'' }) });
+  if(res.status===401){ localStorage.removeItem('ix_pw'); showLogin('Wrong password — try again.'); throw new Error('Login required'); }
+  if(!res.ok) throw new Error('Server error '+res.status);
+  return res.json();
+}
+function showLogin(msg){ document.getElementById('login').classList.remove('hidden'); document.getElementById('pwErr').textContent=msg||''; document.getElementById('pwInput').focus(); }
+function submitLogin(){ const pw=document.getElementById('pwInput').value.trim(); if(!pw){return;} localStorage.setItem('ix_pw',pw); document.getElementById('login').classList.add('hidden'); }
+// login gate runs after load (so the Cowork bridge, if present, is detected first); never gates inside Cowork
+window.addEventListener('load', function(){
+  var pi=document.getElementById('pwInput'); if(pi) pi.addEventListener('keydown', function(e){ if(e.key==='Enter') submitLogin(); });
+  if(!hasCowork() && !localStorage.getItem('ix_pw')) showLogin('');
+});
+function v(id){ const e=document.getElementById(id); return e ? e.value.trim() : ''; }
+function radioVal(name){ const e=document.querySelector(`input[name="${name}"]:checked`); return e ? e.value : ''; }
+function checkVals(grpId){
+  return [...document.getElementById(grpId).querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value).join(';');
+}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+function repName(){ const s=document.getElementById('fRep'); return s.options[s.selectedIndex] ? s.options[s.selectedIndex].text : ''; }
+function newIdFrom(r){
+  if(!r) return '';
+  const groups=[ r.createResults&&r.createResults.results, r.created, r.results, r.objects ];
+  for(const arr of groups){
+    if(Array.isArray(arr)&&arr[0]){ const x=arr[0]; return x.objectId||(x.object&&x.object.id)||x.id||''; }
+  }
+  return r.objectId||r.id||'';
+}
+function firstError(r){
+  const arr=(r&&r.createResults&&r.createResults.results)||(r&&r.results)||[];
+  const e=Array.isArray(arr)?arr.find(o=>o&&o.error):null; return e?e.error:'';
+}
+function toEpoch(localDT){ const t=new Date(localDT).getTime(); return isNaN(t) ? '' : String(t); }
+function fmtPhone(raw){ if(!raw) return ''; let d=String(raw).replace(/\D/g,''); if(d.length===11&&d[0]==='1') d=d.slice(1); return d.length===10 ? ('+1'+d) : raw; }
+
+function toggle(head){
+  const body=head.nextElementSibling, tog=head.querySelector('.sec-toggle');
+  tog.textContent = body.classList.toggle('open') ? '▾' : '▸';
+}
+function syncPills(name, ids){
+  ids.forEach(id=>{ const el=document.getElementById(id); if(!el) return; const inp=el.querySelector('input'); el.classList.toggle('on', inp&&inp.checked); });
+}
+document.querySelectorAll('.pills input[type=checkbox]').forEach(cb=>{
+  cb.addEventListener('change', ()=> cb.parentElement.classList.toggle('on', cb.checked));
+});
+document.getElementById('searchInput').addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
+
+// ---- qualification tracker ----
+function criteria(){
+  return {
+    dm:      !!v('fDMFirst'),
+    vol:     !!(v('fParcelVol') || v('fFreightVol') || v('fInboundVol')),
+    carrier: !!(v('fCarrierParcel') || checkVals('grpFreight')),
+    nature:  !!v('fNature'),
+    loc:     !!v('fLocations')
+  };
+}
+function requiredMet(){ const c=criteria(); return (c.dm?1:0)+(c.vol?1:0)+(c.carrier?1:0); }
+function updateQual(){
+  const c=criteria();
+  const set=(id,met)=>document.getElementById(id).classList.toggle('met',met);
+  set('critDM',c.dm); set('critVol',c.vol); set('critCarrier',c.carrier); set('critNature',c.nature); set('critLoc',c.loc);
+  const req=requiredMet(), ok=req>=3;
+  document.getElementById('qualStatus').textContent = ok ? '✓ Sales Qualified' : `${req} / 3 required`;
+  document.getElementById('qualStatus').classList.toggle('go', ok);
+  document.getElementById('qualBar').classList.toggle('qualified', ok);
+  document.getElementById('dbSql').disabled  = !ok;
+  document.getElementById('dbAppt').disabled = !ok;
+}
+
+// ---- search / select ----
+async function doSearch(){
+  const q=document.getElementById('searchInput').value.trim(); if(!q) return;
+  const res=document.getElementById('searchResults');
+  res.innerHTML='<div style="color:#888;padding:8px 0;font-size:13px;"><span class="spin"></span> Searching HubSpot…</div>';
+  try{
+    const r=await mcp('search_crm_objects',{ objectType:'companies', query:q, properties:['name','phone','city','state'], limit:6,
+      chatInsights:{ userIntent:'Search company for qualifying call', satisfaction:'NEUTRAL' } });
+    const items=r.results||[];
+    if(!items.length){ res.innerHTML=`<div style="color:#888;font-size:13px;padding:8px 0;">No results. <button class="btn btn-outline btn-sm" onclick="doCreateNew()">+ Create "${esc(q)}"</button></div>`; return; }
+    res.innerHTML=items.map(c=>`
+      <div class="result-item" onclick="pick('${c.id}','${esc(c.properties.name||'')}','${esc(c.properties.phone||'')}','${esc(c.properties.city||'')}')">
+        <div><div class="rname">${esc(c.properties.name||'—')}</div>
+        <div class="rsub">${[c.properties.city,c.properties.state].filter(Boolean).join(', ')} ${c.properties.phone?'· '+c.properties.phone:''}</div></div>
+        <span class="tag tag-exist">Existing</span></div>`).join('')
+      + `<div style="margin-top:8px;"><button class="btn btn-outline btn-sm" onclick="doCreateNew()">+ Not listed — create new company</button></div>`;
+  }catch(e){ res.innerHTML=`<div style="color:#c0392b;font-size:13px;padding:8px 0;">Search failed: ${esc(e.message)}</div>`; }
+}
+async function pick(id,name,phone,city){
+  company={ id, name, isNew:false };
+  document.getElementById('badgeName').innerHTML=esc(name)+' <span class="tag tag-exist">Existing</span>';
+  document.getElementById('badgeMeta').textContent=[city,phone].filter(Boolean).join(' · ')+` · HubSpot ID: ${id}`;
+  showForm();
+  await loadCompany(id);   // pull saved data back into the form
+}
+
+// ---- populate helpers ----
+function setVal(id,val){ const e=document.getElementById(id); if(e && val!=null && val!=='') e.value=val; }
+function setSelect(id,val){
+  const e=document.getElementById(id); if(!e || val==null || val==='') return;
+  if(![...e.options].some(o=>o.value===val)){ const o=document.createElement('option'); o.value=val; o.textContent=val; e.appendChild(o); }
+  e.value=val;
+}
+function setRadio(name,val,ids){
+  if(val==null || val==='') return;
+  const el=document.querySelector(`input[name="${name}"][value="${val}"]`);
+  if(el){ el.checked=true; syncPills(name,ids); }
+}
+function setChecks(grpId,val){
+  if(!val) return; const want=new Set(String(val).split(';'));
+  document.getElementById(grpId).querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    const on=want.has(cb.value); cb.checked=on; cb.parentElement.classList.toggle('on',on);
+  });
+}
+
+// ---- pull saved company data + decision maker ----
+async function loadCompany(id){
+  const meta=document.getElementById('badgeMeta'); const base=meta.textContent;
+  meta.innerHTML=esc(base)+' · <span class="spin"></span> loading saved data…';
+  try{
+    const PROPS=['current_carrier__prospect_','current_carrier__freight__canada','projected_weekly_margin','ups_volume',
+      'current_freight_volume','issues_with_current_carrier','what_is_the_volume_of_inbound_shipments_week_',
+      'vendor_invoices___shipping___handling_','how_do_they_process_their_shipments_',
+      'how_do_they_choose_which_carrier_service_to_select_','what_products_do_they_ship_','multiple_invoices_',
+      'billing_process','industry','of_locations','invoices__2_points_','does_this_company_pay_for_shipping_',
+      'international_air_freight','what_kind_of_shipping_do_they_do_','do_they_ship_air__ground__international_',
+      'any_other_information_about_the_shipment'];
+    const r=await mcp('get_crm_objects',{ objectType:'companies', objectIds:[parseInt(id)], properties:PROPS });
+    const obj=(r.results||r.objects||(Array.isArray(r)?r:[]))[0]; const p=(obj&&obj.properties)||{};
+
+    setChecks('grpFreight',p.current_carrier__freight__canada);
+    setVal('fWeeklyMargin',p.projected_weekly_margin);
+    setVal('fParcelVol',p.ups_volume);
+    setVal('fFreightVol',p.current_freight_volume);
+    setVal('fIssues',p.issues_with_current_carrier);
+    setVal('fInboundVol',p.what_is_the_volume_of_inbound_shipments_week_);
+    setVal('fVendorInv',p.vendor_invoices___shipping___handling_);
+    setVal('fHowProcess',p.how_do_they_process_their_shipments_);
+    setVal('fHowChoose',p.how_do_they_choose_which_carrier_service_to_select_);
+    setVal('fProducts',p.what_products_do_they_ship_);
+    setVal('fMultiInv',p.multiple_invoices_);
+    setVal('fBilling',p.billing_process);
+    setVal('fLocations',p.of_locations);
+    setSelect('fCarrierParcel',p.current_carrier__prospect_);
+    setSelect('fNature',p.industry);
+    setRadio('invoices',p.invoices__2_points_,['pInvY','pInvN']);
+    setRadio('payShip',p.does_this_company_pay_for_shipping_,['pPayY','pPayN']);
+    setRadio('intl',p.international_air_freight,['pIntlY','pIntlN']);
+    setChecks('grpModes',p.what_kind_of_shipping_do_they_do_);
+    setChecks('grpServices',p.do_they_ship_air__ground__international_);
+
+    const pn=p.any_other_information_about_the_shipment;
+    if(pn){ document.getElementById('fPriorNotes').value=pn; document.getElementById('priorNotesWrap').style.display='block'; }
+
+    await loadDecisionMaker(id);
+    updateQual();
+    meta.innerHTML=esc(base)+' · <span style="color:#2E8B6A;font-weight:bold;">✓ saved data loaded</span>';
+  }catch(e){
+    meta.innerHTML=esc(base)+' · <span style="color:#c0392b;">couldn\'t load saved data — start fresh</span>';
+  }
+}
+
+async function loadDecisionMaker(companyId){
+  try{
+    const s=await mcp('search_crm_objects',{ objectType:'contacts',
+      properties:['firstname','lastname','jobtitle','email','phone'],
+      filterGroups:[{ associatedWith:[{ objectType:'companies', operator:'EQUAL', objectIdValues:[parseInt(companyId)] }] }],
+      limit:1,
+      chatInsights:{ userIntent:'Load decision maker contact for company', satisfaction:'NEUTRAL' } });
+    const c=(s.results||[])[0]; if(!c) return; const p=c.properties||{};
+    setVal('fDMFirst',p.firstname);
+    setVal('fDMLast',p.lastname);
+    setVal('fDMTitle',p.jobtitle);
+    setVal('fDMEmail',p.email);
+    setVal('fDMPhone',p.phone);
+  }catch(e){}
+}
+function doCreateNew(){
+  const name=document.getElementById('searchInput').value.trim()||'New Company';
+  company={ id:null, name, isNew:true };
+  document.getElementById('badgeName').innerHTML=esc(name)+' <span class="tag tag-new">New</span>';
+  document.getElementById('badgeMeta').textContent='New record — will be created in HubSpot on save';
+  showForm();
+}
+function showForm(){
+  if(!document.getElementById('fRep').value){ alert('Please select your name (Rep) first.'); return; }
+  clearForm();
+  document.getElementById('badge').classList.remove('hidden');
+  document.getElementById('searchCard').classList.add('hidden');
+  document.getElementById('formArea').classList.remove('hidden');
+  document.getElementById('cfgNote').style.display = CFG.MEETING_LINK.includes('REPLACE_ME') ? 'block':'none';
+  updateQual();
+  window.scrollTo(0,0);
+}
+
+// Reset every field so one company's data never bleeds into the next
+function clearForm(){
+  document.querySelectorAll('#formArea input, #formArea select, #formArea textarea').forEach(el=>{
+    if(el.type==='radio'||el.type==='checkbox'){ el.checked=false; if(el.parentElement) el.parentElement.classList.remove('on'); }
+    else if(el.id==='fApptZoom'){ /* keep config link */ }
+    else if(el.tagName==='SELECT'){ el.selectedIndex=0; }
+    else { el.value=''; }
+  });
+  document.getElementById('fDate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('fApptZoom').value=CFG.MEETING_LINK;
+  const pnw=document.getElementById('priorNotesWrap'); if(pnw) pnw.style.display='none';
+  document.getElementById('apptSection').classList.add('hidden');
+  document.getElementById('emailBox').classList.add('hidden');
+  const m=document.getElementById('saveMsg'); m.className='save-msg'; m.textContent='';
+}
+function resetSearch(){
+  company=null;
+  document.getElementById('badge').classList.add('hidden');
+  document.getElementById('searchCard').classList.remove('hidden');
+  document.getElementById('formArea').classList.add('hidden');
+  document.getElementById('searchResults').innerHTML='';
+  document.getElementById('emailBox').classList.add('hidden');
+  document.getElementById('saveMsg').className='save-msg';
+  document.getElementById('saveMsg').textContent='';
+}
+
+// ---- build company property map (existing HubSpot fields) ----
+function companyProps(){
+  const props={}; const set=(k,val)=>{ if(val) props[k]=val; };
+  set('invoices__2_points_',                radioVal('invoices'));
+  set('current_carrier__prospect_',         v('fCarrierParcel'));
+  set('current_carrier__freight__canada',   checkVals('grpFreight'));   // multiple-checkbox property
+  set('projected_weekly_margin',            v('fWeeklyMargin'));
+  set('ups_volume',                         v('fParcelVol'));
+  set('current_freight_volume',             v('fFreightVol'));
+  set('issues_with_current_carrier',        v('fIssues'));
+  set('does_this_company_pay_for_shipping_',radioVal('payShip'));
+  set('what_kind_of_shipping_do_they_do_',  checkVals('grpModes'));
+  set('what_is_the_volume_of_inbound_shipments_week_', v('fInboundVol'));
+  set('vendor_invoices___shipping___handling_', v('fVendorInv'));
+  set('how_do_they_process_their_shipments_',v('fHowProcess'));
+  set('how_do_they_choose_which_carrier_service_to_select_', v('fHowChoose'));
+  set('what_products_do_they_ship_',         v('fProducts'));
+  set('do_they_ship_air__ground__international_', checkVals('grpServices'));
+  set('international_air_freight',           radioVal('intl'));
+  set('any_other_information_about_the_shipment', v('fOtherShip'));
+  set('multiple_invoices_',                 v('fMultiInv'));
+  set('billing_process',                    v('fBilling'));
+  set('industry',                           v('fNature'));      // Nature of business
+  set('of_locations',                       v('fLocations'));   // # of locations
+
+  // unmapped → notes
+  const checklist=['Recap benefits','30-day invoices requested','Follow-up scheduled','Trial close','Implementation discussed','Tour offered']
+    .map((c,i)=>`${document.getElementById('ck'+(i+1)).checked?'✅':'☐'} ${c}`).join('\n');
+  const note=[];
+  note.push(`Rep: ${repName()}  ·  Date: ${v('fDate')}`);
+  if(v('fDMFirst'))    note.push(`Decision maker: ${(v('fDMFirst')+' '+v('fDMLast')).trim()}${v('fDMTitle')?' ('+v('fDMTitle')+')':''}`);
+  if(v('fCommitted'))  note.push(`Committed to provider: ${v('fCommitted')}`);
+  if(v('fCSR'))        note.push(`Issue handling: ${v('fCSR')}`);
+  const exec=checkVals('grpExec'); if(exec) note.push(`Executive focus: ${exec}`);
+  if(v('fObjections')) note.push(`Objections: ${v('fObjections')}`);
+  if(v('fValueAdds'))  note.push(`Value adds: ${v('fValueAdds')}`);
+  if(v('fNotes'))      note.push(`Additional notes: ${v('fNotes')}`);
+  note.push(`\nCall checklist:\n${checklist}`);
+  const existing=props['any_other_information_about_the_shipment']||'';
+  props['any_other_information_about_the_shipment']=(existing?existing+'\n\n':'')+note.join('\n');
+  return props;
+}
+
+// ---- disposition ----
+function bookAppointment(){
+  document.getElementById('apptSection').classList.remove('hidden');
+  document.getElementById('apptSection').scrollIntoView({behavior:'smooth'});
+  if(!v('fApptWhen')){
+    const msg=document.getElementById('saveMsg');
+    msg.className='save-msg'; msg.textContent='Pick the appointment date & time above, then click "Book Appointment" again.';
+    return;
+  }
+  runDisposition('appointment');
+}
+
+async function runDisposition(kind){
+  if(!company) return;
+  const repId=document.getElementById('fRep').value;
+  if(!repId){ alert('Select your name (Rep) first.'); return; }
+  if((kind==='sql'||kind==='appointment') && requiredMet()<3){
+    alert('Sales Qualified needs all 3 required: Decision maker, Volume, and Who they currently use.'); return;
+  }
+  if(kind==='appointment' && !v('fApptWhen')){ alert('Pick an appointment date & time first.'); return; }
+
+  const stage=CFG.STAGES[kind], life=CFG.LIFECYCLE[kind], lead=CFG.LEADSTATUS[kind];
+  const stageLabel={sql:'Sales Qualified Lead',appointment:'First Meeting Scheduled',nurture:'Nurture',disqualify:'Disqualified',prospecting:'Prospecting'}[kind];
+
+  const buttons=document.querySelectorAll('.dispo-btn'); buttons.forEach(b=>b.disabled=true);
+  const msg=document.getElementById('saveMsg'); msg.className='save-msg saving';
+  msg.innerHTML='<span class="spin"></span> Saving to HubSpot…';
+
+  try{
+    // 1) COMPANY ------------------------------------------------------
+    const cProps=companyProps();
+    cProps['lifecyclestage']=life;
+    if(lead) cProps['hs_lead_status']=lead;
+
+    let companyId=company.id;
+    if(company.isNew){
+      cProps['name']=company.name;
+      const r=await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        createRequest:{ objects:[{ objectType:'companies', properties:cProps }] } });
+      companyId=newIdFrom(r);
+      if(!companyId) throw new Error('Company not created'+(firstError(r)?': '+firstError(r):''));
+      company.id=companyId; company.isNew=false;
+    }else{
+      await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        updateRequest:{ objects:[{ objectType:'companies', objectId:parseInt(companyId), properties:cProps }] } });
+    }
+
+    // 2) CONTACT (decision maker) ------------------------------------
+    let contactId=null, contactWarn='';
+    if(v('fDMFirst')){
+      const dmProps={ firstname:v('fDMFirst'), lastname:v('fDMLast')||v('fDMFirst'), lifecyclestage:life };
+      if(v('fDMTitle')) dmProps.jobtitle=v('fDMTitle');
+      if(v('fDMEmail')) dmProps.email=v('fDMEmail');
+      if(v('fDMPhone')) dmProps.phone=fmtPhone(v('fDMPhone'));
+      if(lead) dmProps.hs_lead_status=lead;
+
+      // dedupe by email if provided
+      let existing=null;
+      if(v('fDMEmail')){
+        try{
+          const s=await mcp('search_crm_objects',{ objectType:'contacts', query:v('fDMEmail'),
+            properties:['email'], limit:1, chatInsights:{ userIntent:'Find decision maker contact by email', satisfaction:'NEUTRAL' } });
+          existing=(s.results||[])[0];
+        }catch(e){}
+      }
+      if(existing){
+        contactId=existing.id;
+        await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+          updateRequest:{ objects:[{ objectType:'contacts', objectId:parseInt(contactId), properties:dmProps,
+            associations:[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }] }] } });
+      }else{
+        const createContact=async()=> mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+          createRequest:{ objects:[{ objectType:'contacts', properties:dmProps,
+            associations:[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }] }] } });
+        let r=await createContact();
+        contactId=newIdFrom(r);
+        if(!contactId && dmProps.phone){          // HubSpot rejects invalid phone formats — retry without it
+          delete dmProps.phone; contactWarn='phone not saved (invalid format)';
+          r=await createContact(); contactId=newIdFrom(r);
+        }
+        if(!contactId) contactWarn='decision-maker contact not saved'+(firstError(r)?' ('+firstError(r)+')':'');
+      }
+    }
+
+    // 3) DEAL (Deal Pipeline) — reuse an existing OPEN deal on this company; never duplicate
+    const dealAssoc=[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }];
+    if(contactId) dealAssoc.push({ targetObjectId:parseInt(contactId), targetObjectType:'contacts' });
+    let dealId=null, dealReused=false;
+    try{
+      const ed=await mcp('search_crm_objects',{ objectType:'deals',
+        properties:['dealstage','pipeline','hs_is_closed'],
+        filterGroups:[{ associatedWith:[{ objectType:'companies', operator:'EQUAL', objectIdValues:[parseInt(companyId)] }] }],
+        limit:25, chatInsights:{ userIntent:'Find existing open deal to avoid duplicates', satisfaction:'NEUTRAL' } });
+      const open=(ed.results||[]).find(d=>d.properties && d.properties.pipeline===CFG.PIPELINE && d.properties.hs_is_closed!=='true');
+      if(open){ dealId=open.id; dealReused=true; }
+    }catch(e){}
+    if(dealReused){
+      const up={ dealstage:stage, hubspot_owner_id:repId };
+      if(v('fWeeklyMargin')) up.projected_weekly_margin=v('fWeeklyMargin');
+      await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        updateRequest:{ objects:[{ objectType:'deals', objectId:parseInt(dealId), properties:up, associations:dealAssoc }] } });
+    }else{
+      const dealProps={ dealname:company.name, pipeline:CFG.PIPELINE, dealstage:stage, hubspot_owner_id:repId };
+      if(v('fWeeklyMargin')) dealProps.projected_weekly_margin=v('fWeeklyMargin');
+      const dr=await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        createRequest:{ objects:[{ objectType:'deals', properties:dealProps, associations:dealAssoc }] } });
+      dealId=newIdFrom(dr);
+      if(!dealId) throw new Error('Deal not created'+(firstError(dr)?': '+firstError(dr):''));
+    }
+
+    // 4) APPOINTMENT: meeting + task to Robert -----------------------
+    if(kind==='appointment'){
+      const startMs=toEpoch(v('fApptWhen'));
+      const endMs=String(parseInt(startMs)+30*60*1000);
+      const mAssoc=[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }];
+      if(contactId) mAssoc.push({ targetObjectId:parseInt(contactId), targetObjectType:'contacts' });
+      if(dealId)    mAssoc.push({ targetObjectId:parseInt(dealId),    targetObjectType:'deals' });
+      await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        createRequest:{ objects:[{ objectType:'meetings', properties:{
+          hs_meeting_title:`InXpress meeting — ${company.name}`,
+          hs_meeting_body:`Discovery / first meeting with ${v('fDMFirst')||company.name}.\nMeeting link: ${CFG.MEETING_LINK}`,
+          hs_meeting_location:CFG.MEETING_LINK,
+          hs_meeting_start_time:startMs, hs_meeting_end_time:endMs, hs_timestamp:startMs,
+          hubspot_owner_id:repId
+        }, associations:mAssoc }] } });
+
+      const tAssoc=[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }];
+      if(dealId) tAssoc.push({ targetObjectId:parseInt(dealId), targetObjectType:'deals' });
+      await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        createRequest:{ objects:[{ objectType:'tasks', properties:{
+          hs_task_subject:`New appointment booked: ${company.name} (${repName()})`,
+          hs_task_body:`${repName()} booked a first meeting with ${company.name}.\nWhen: ${v('fApptWhen')}\nDecision maker: ${v('fDMFirst')?(v('fDMFirst')+' '+v('fDMLast')).trim():'—'}\nMeeting link: ${CFG.MEETING_LINK}`,
+          hs_task_status:'NOT_STARTED', hs_task_priority:'HIGH', hs_task_type:'MEETING',
+          hs_timestamp:startMs, hubspot_owner_id:CFG.MANAGER_OWNER
+        }, associations:tAssoc }] } });
+    }
+
+    // success
+    msg.className='save-msg ok';
+    msg.innerHTML=`✅ Saved — ${company.name} → <b>${stageLabel}</b> in Deal Pipeline ${dealReused?'(updated existing deal — no duplicate)':'(new deal)'}. `
+      + `Company &amp; ${contactId?'decision-maker ':''}lifecycle set to match.`
+      + (kind==='appointment'?' Meeting created + Robert notified.':'')
+      + (contactWarn?` <span style="color:#b06a00;">⚠️ ${esc(contactWarn)}</span>`:'');
+    buttons.forEach(b=>b.disabled=false);
+    updateQual();
+
+    // thank-you email for SQL / appointment / nurture
+    if(kind==='sql'||kind==='appointment'||kind==='nurture'){ showEmail(kind); }
+    else { document.getElementById('emailBox').classList.add('hidden'); }
+
+  }catch(e){
+    msg.className='save-msg err'; msg.textContent='❌ Save failed: '+(e&&e.message?e.message:e);
+    buttons.forEach(b=>b.disabled=false); updateQual();
+  }
+}
+
+// ---- Update info only: writes company + contact data WITHOUT touching lifecycle/status or creating a deal ----
+async function updateInfoOnly(){
+  if(!company) return;
+  const buttons=document.querySelectorAll('.dispo-btn'); buttons.forEach(b=>b.disabled=true);
+  const msg=document.getElementById('saveMsg'); msg.className='save-msg saving';
+  msg.innerHTML='<span class="spin"></span> Updating info in HubSpot…';
+  try{
+    // COMPANY — data fields only (companyProps has NO lifecyclestage / lead status / owner)
+    const cProps=companyProps();
+    let companyId=company.id;
+    if(company.isNew){
+      cProps['name']=company.name;
+      const r=await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        createRequest:{ objects:[{ objectType:'companies', properties:cProps }] } });
+      companyId=newIdFrom(r);
+      if(!companyId) throw new Error('Company not created'+(firstError(r)?': '+firstError(r):''));
+      company.id=companyId; company.isNew=false;
+    }else{
+      await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        updateRequest:{ objects:[{ objectType:'companies', objectId:parseInt(companyId), properties:cProps }] } });
+    }
+
+    // CONTACT (decision maker) — info only, NO lifecyclestage / lead status
+    let contactWarn='';
+    if(v('fDMFirst')){
+      const dmProps={ firstname:v('fDMFirst'), lastname:v('fDMLast')||v('fDMFirst') };
+      if(v('fDMTitle')) dmProps.jobtitle=v('fDMTitle');
+      if(v('fDMEmail')) dmProps.email=v('fDMEmail');
+      if(v('fDMPhone')) dmProps.phone=fmtPhone(v('fDMPhone'));
+      let existing=null;
+      if(v('fDMEmail')){
+        try{
+          const s=await mcp('search_crm_objects',{ objectType:'contacts', query:v('fDMEmail'),
+            properties:['email'], limit:1, chatInsights:{ userIntent:'Find decision maker contact by email', satisfaction:'NEUTRAL' } });
+          existing=(s.results||[])[0];
+        }catch(e){}
+      }
+      if(existing){
+        await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+          updateRequest:{ objects:[{ objectType:'contacts', objectId:parseInt(existing.id), properties:dmProps,
+            associations:[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }] }] } });
+      }else{
+        const createContact=async()=> mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+          createRequest:{ objects:[{ objectType:'contacts', properties:dmProps,
+            associations:[{ targetObjectId:parseInt(companyId), targetObjectType:'companies' }] }] } });
+        let r=await createContact(); let cid=newIdFrom(r);
+        if(!cid && dmProps.phone){ delete dmProps.phone; contactWarn='phone not saved (invalid format)'; r=await createContact(); cid=newIdFrom(r); }
+        if(!cid) contactWarn='decision-maker contact not saved'+(firstError(r)?' ('+firstError(r)+')':'');
+      }
+    }
+
+    msg.className='save-msg ok';
+    msg.innerHTML=`✅ Info updated — <b>${esc(company.name)}</b>. Lifecycle, status &amp; deals left unchanged.`
+      + (contactWarn?` <span style="color:#b06a00;">⚠️ ${esc(contactWarn)}</span>`:'');
+    buttons.forEach(b=>b.disabled=false); updateQual();
+    document.getElementById('emailBox').classList.add('hidden');
+  }catch(e){
+    msg.className='save-msg err'; msg.textContent='❌ Update failed: '+(e&&e.message?e.message:e);
+    buttons.forEach(b=>b.disabled=false); updateQual();
+  }
+}
+
+// ---- thank-you email generator ----
+function showEmail(kind){
+  const first=v('fDMFirst')||'there';
+  const recap=[];
+  if(v('fIssues'))    recap.push(`the challenges you mentioned with your current setup (${v('fIssues').slice(0,140)})`);
+  if(v('fValueAdds')) recap.push(`how we can help — ${v('fValueAdds').slice(0,140)}`);
+  const recapLine = recap.length ? `It was great to learn more about ${recap.join(', and ')}.` :
+    `It was great to learn more about your shipping operation.`;
+
+  let next;
+  if(kind==='appointment'){
+    next = `I've booked time for us to continue the conversation:\n   • When: ${v('fApptWhen')}\n   • Join / book: ${CFG.MEETING_LINK}\nI'll send a calendar invite to confirm.`;
+  }else if(kind==='sql'){
+    next = `As a next step, I'll put together some numbers based on what you shared. If you're able to send over ~30 days of recent shipping invoices, I can make the comparison concrete.`;
+  }else{
+    next = `I know the timing isn't right just yet — I'll check back in down the road. If anything changes on the shipping side in the meantime, I'm one call away.`;
+  }
+
+  const body =
+`Subject: Thank you — InXpress & ${company.name}
+
+Hi ${first},
+
+Thank you for taking the time to speak with me today. ${recapLine}
+
+${next}
+
+In the meantime, please don't hesitate to reach out with any questions.
+
+Best regards,
+${repName()}
+InXpress`;
+
+  document.getElementById('emailText').value=body;
+  document.getElementById('emailBox').classList.remove('hidden');
+}
+function copyEmail(){
+  const t=document.getElementById('emailText'); t.select(); t.setSelectionRange(0,99999);
+  try{ document.execCommand('copy'); }catch(e){}
+  if(navigator.clipboard){ navigator.clipboard.writeText(t.value).catch(()=>{}); }
+}
+</script>
+</body>
+</html>

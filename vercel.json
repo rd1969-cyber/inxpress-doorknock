@@ -1,0 +1,23 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "functions": {
+    "api/freight_price.py": {
+      "maxDuration": 300,
+      "includeFiles": "api/_freight/**"
+    },
+    "api/hubspot-webhook.js": {
+      "maxDuration": 300
+    },
+    "api/freight_request.py": {
+      "maxDuration": 300,
+      "includeFiles": "api/_freight/**"
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/freight_price",
+      "schedule": "0 13 * * *"
+    }
+  ]
+}

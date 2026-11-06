@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Customer Update — InXpress</title>
+<meta name="theme-color" content="#1A3A5C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Customer">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ix-font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;--navy:#1A3A5C;--teal:#2E8B6A;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:var(--ix-font);background:#f4f6f9;color:#222;font-size:16px;padding-bottom:40px;}
+header{background:var(--navy);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 20px 14px;display:flex;align-items:center;justify-content:space-between;}
+header h1{font-size:17px;font-weight:800;}
+header .sub{font-size:10px;opacity:.7;letter-spacing:1px;margin-bottom:3px;}
+.ix-logo{height:22px;width:auto;fill:#fff;}
+.container{max-width:680px;margin:0 auto;padding:16px;}
+.card{background:#fff;border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.card h2{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:12px;}
+.sec-h{font-size:12px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 10px;padding-bottom:5px;border-bottom:1px solid #eee;}
+.sec-h:first-of-type{margin-top:0;}
+.fg{margin-bottom:13px;}
+.fl{font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:4px;}
+input,select,textarea{width:100%;padding:11px 12px;border:1.5px solid #ccc;border-radius:9px;font-size:15px;font-family:var(--ix-font);background:#fff;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);}
+textarea{min-height:64px;resize:vertical;}
+.row{display:flex;gap:10px;flex-wrap:wrap;}
+.row .fg{flex:1;min-width:120px;}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px;}
+.pill{display:flex;align-items:center;gap:4px;padding:5px 11px;border:1px solid #ccc;border-radius:20px;cursor:pointer;font-size:12px;user-select:none;}
+.pill.on{border-color:#1A3A5C;background:#e8eef5;color:#1A3A5C;font-weight:bold;}
+.pill input{cursor:pointer;accent-color:#1A3A5C;}
+.btn{border:none;border-radius:9px;font-weight:700;font-size:15px;padding:13px 16px;cursor:pointer;font-family:var(--ix-font);}
+.btn-navy{background:var(--navy);color:#fff;width:100%;}
+.btn-outline{background:#fff;color:var(--navy);border:1.5px solid var(--navy);}
+.btn-sm{font-size:13px;padding:8px 12px;width:auto;}
+.btn-save{background:var(--teal);color:#fff;width:100%;font-size:16px;padding:15px;}
+.btn-save:disabled{opacity:.5;cursor:not-allowed;}
+.hidden{display:none!important;}
+.badge{background:#e8eef5;border:1px solid #cdd8e6;border-radius:10px;padding:12px 14px;margin-bottom:14px;}
+.badge .bn{font-size:16px;font-weight:800;color:var(--navy);}
+.badge .bm{font-size:12px;color:#667;margin-top:3px;}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+.chip-cust{background:#e6f4ef;color:var(--teal);border:1px solid var(--teal);}
+.chip-other{background:#eef1f5;color:#667;border:1px solid #cdd8e6;}
+.status-note{font-size:12px;color:var(--teal);font-weight:700;margin-top:6px;}
+.result-item{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border:1px solid #e3e6ea;border-radius:9px;margin-bottom:7px;cursor:pointer;}
+.result-item:hover{border-color:var(--navy);background:#f4f7fb;}
+.rname{font-weight:700;color:var(--navy);font-size:14px;}
+.rsub{font-size:12px;color:#888;}
+.tag-exist{background:#eef1f5;color:#667;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.prior{background:#fafbfc;border:1px solid #eee;border-radius:8px;padding:10px;font-size:12px;color:#667;white-space:pre-wrap;max-height:140px;overflow:auto;}
+.save-msg{margin-top:12px;font-size:14px;font-weight:600;min-height:18px;}
+.save-msg.ok{color:var(--teal);} .save-msg.err{color:#c0392b;} .save-msg.saving{color:#888;}
+.spin{display:inline-block;width:13px;height:13px;border:2px solid #ccc;border-top-color:var(--navy);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.overlay{position:fixed;inset:0;background:var(--navy);color:#fff;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.overlay.hidden{display:none;}
+.overlay h2{font-size:18px;margin-bottom:6px;}
+.overlay p{font-size:13px;opacity:.85;margin-bottom:18px;text-align:center;}
+.overlay input{max-width:300px;text-align:center;color:#222;}
+.overlay button{max-width:300px;margin-top:12px;background:#fff;color:var(--navy);}
+.overlay .err{color:#ffb3a8;font-size:12px;margin-top:10px;min-height:14px;}
+.fh{font-size:11px;color:#999;font-style:italic;margin:-1px 0 5px;}
+</style>
+</head>
+<body>
+
+<!-- Login (web deploy; skipped in Cowork) -->
+<div class="overlay hidden" id="login">
+  <h2>InXpress Customer Update</h2>
+  <p>Enter the team password to use this on this device.<br>You'll only do this once.</p>
+  <input type="password" id="pwInput" placeholder="Team password" autocomplete="off">
+  <button class="btn" onclick="submitLogin()">Continue</button>
+  <div class="err" id="pwErr"></div>
+</div>
+
+<header>
+  <div><div class="sub">SALES</div><h1>Customer Update</h1></div>
+  <svg class="ix-logo" viewBox="0 0 141.73 29.12" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="InXpress">
+    <path d="M48.35,4.86,49,4.4C52.84,1.39,59.14.66,63.57.56c-5.66-.95-15-1.36-20.94,4.37l-.28.26c-.46.42-1.36,1.23-2.06,1.95l-1,1.08-.5.53L36,3.07H30.25L35,11.73,24.54,21h6.2l6.16-6,2.81,6h5.76l-4.82-9,.27-.26S43,9.84,45,7.91l1.16-1.13A16.14,16.14,0,0,1,48.35,4.86Z"/>
+    <polygon points="5.03 2.91 0 20.98 4.69 20.98 9.72 2.91 5.03 2.91"/>
+    <path d="M20.92,7.85c4.16,0,5.78,1.57,4.92,4.67L23.46,21H18.87l1.87-6.64c.58-2.07.23-2.77-2.9-2.77-2.68,0-3.94.85-4.55,3L11.5,21H6.91l2.41-8.7a6,6,0,0,1,5.81-4.43h5.79Z"/>
+    <path d="M104.61,16.79v.05c-.23.83.5,1.15,2.19,1.15h3.34c1.29,0,1.91-.25,2.12-1s-.35-1-1.61-1l-4.52-.08c-4.09-.07-5.84-.82-5-3.91s3.09-4.14,7.39-4.14h5.21c3.32,0,4.55,1.19,3.85,3.79H113c-.09-.5-.79-.75-2.08-.75h-3.2c-1.11,0-1.71.17-1.89.82s.43.83,1.92.85l5.58.07c3.24.06,4.38,1.28,3.6,4.07C116,20.06,114,21,110,21h-4.67c-4.74,0-6.52-.72-5.58-4.24Z"/>
+    <path d="M122.89,16.79l0,.05c-.22.83.5,1.15,2.19,1.15h3.35c1.29,0,1.9-.25,2.12-1s-.35-1-1.61-1l-4.52-.08c-4.09-.07-5.85-.82-5-3.91s3.1-4.14,7.39-4.14H132c3.32,0,4.55,1.19,3.85,3.79h-4.59c-.08-.5-.78-.75-2.07-.75H126c-1.12,0-1.72.17-1.9.82s.44.83,1.92.85l5.59.07c3.24.06,4.38,1.28,3.6,4.07-.94,3.34-2.95,4.31-6.94,4.31h-4.67c-4.74,0-6.52-.72-5.58-4.24Z"/>
+    <path d="M77.48,12.75h4.31c1-3.57,0-4.91-3.5-4.91H73.56a6,6,0,0,0-5.81,4.43L65.35,21h4.59l2-7c.41-1.47,1.06-2.37,3.56-2.37C76.69,11.66,77.35,12,77.48,12.75Z"/>
+    <path d="M91.06,18H89.12c-1.91,0-2.57-.57-2.15-2.07,0-.1.09-.22.12-.35H98.61l.76-2.74c.91-3.22-.66-5-4.51-5H90.57c-3.82,0-6.4,1.77-7.3,5l-1,3.49C81.45,19.34,83,21,86.9,21h4.27c4.07,0,6.2-1.15,7.07-4.24H93.87C93.27,17.91,92.53,18,91.06,18ZM87.9,12.71C88.25,11.43,89.16,11,91,11h1.89c1.81,0,2.47.4,2.11,1.68v0H87.88Z"/>
+    <path d="M60.32,7.89H54.57a6,6,0,0,0-5.76,4.42L44.17,29.12h4.59L51,21h5.69c4.62,0,7-1.29,7.9-4.44l1.23-4.39C66.74,9,65.11,7.89,60.32,7.89Zm.53,5.71-.49,1.75c-.44,1.6-1.47,2.17-3.51,2.17H51.93l1-3.95c.45-1.59,1.45-2.14,3.51-2.14h2.08C60.56,11.43,61.31,11.93,60.85,13.6Z"/>
+    <path d="M141,10.84a2.31,2.31,0,0,1-3.29,0,2.33,2.33,0,0,1,0-3.29,2.34,2.34,0,0,1,4,1.64A2.24,2.24,0,0,1,141,10.84Zm-3.06-3.07a2,2,0,0,0-.59,1.42,2,2,0,0,0,.58,1.43,2,2,0,0,0,2.84-2.85,2,2,0,0,0-2.83,0Zm1.37.13a2,2,0,0,1,.7.1.63.63,0,0,1,.39.64.56.56,0,0,1-.25.51.8.8,0,0,1-.37.12.66.66,0,0,1,.58.65v.19a1.28,1.28,0,0,0,0,.19.31.31,0,0,0,0,.13l0,0H140v-.34a.62.62,0,0,0-.24-.58,1,1,0,0,0-.5-.08h-.36v1h-.45V7.9Zm.49.41a1.12,1.12,0,0,0-.55-.1h-.39v.93h.41a1.16,1.16,0,0,0,.43-.06.45.45,0,0,0,.1-.77Z"/>
+  </svg>
+</header>
+
+<div class="container">
+<script>
+const CFG = {
+  TOOL: 'mcp__1abe7b1e-6875-49b2-82be-4306f3fe11fb',
+  PARCEL_CARRIERS: ['UPS','FedEx','DHL','Purolator','Canpar','Third Party Portal','Other'],
+  // Must match the options of HubSpot company property current_carrier__freight__canada exactly
+  LTL_CARRIERS: ['Day and Ross','Accufrate','DHL Global Forwarding','JP Cargo','CH Robinson','QuickX','APEX',
+    'WCE','Maritime Ontario','Overland','Manitoulin','Comox','MaltaCourt','Kindersley','Laneway Logistics',
+    'One Reimer','Bellore','TransForce','Midland','Armour','Other'],
+  INDUSTRIES: [
+    ['Manufacturing','Manufacturing'],['Wholesale','Wholesale'],['RETAIL','Retail'],['eCommerce','eCommerce'],
+    ['CONSUMER_GOODS','Consumer Goods'],['CONSUMER_ELECTRONICS','Consumer Electronics'],
+    ['FOOD_BEVERAGES','Food & Beverages'],['FOOD_PRODUCTION','Food Production'],['AUTOMOTIVE','Automotive'],
+    ['BUILDING_MATERIALS','Building Materials'],['MACHINERY','Machinery'],['APPAREL_FASHION','Apparel & Fashion'],
+    ['CHEMICALS','Chemicals'],['PLASTICS','Plastics'],['PHARMACEUTICALS','Pharmaceuticals'],
+    ['MEDICAL_DEVICES','Medical Devices'],['LOGISTICS_AND_SUPPLY_CHAIN','Logistics & Supply Chain'],
+    ['IMPORT_AND_EXPORT','Import & Export'],['PACKAGING_AND_CONTAINERS','Packaging & Containers'],
+    ['FURNITURE','Furniture'],['SPORTING_GOODS','Sporting Goods'],['COSMETICS','Cosmetics'],['PRINTING','Printing'],
+    ['PAPER_FOREST_PRODUCTS','Paper & Forest Products'],['ELECTRICAL_ELECTRONIC_MANUFACTURING','Electrical/Electronic Mfg'],
+    ['MECHANICAL_OR_INDUSTRIAL_ENGINEERING','Mechanical/Industrial Eng'],['HEALTH_WELLNESS_AND_FITNESS','Health, Wellness & Fitness'],
+    ['CONSTRUCTION','Construction'],['Pet Products','Pet Products'],['Household Goods','Household Goods'],
+    ['Office Products','Office Products'],['Toys & Games','Toys & Games'],['Other','Other']
+  ],
+  REPS: [
+    { id:'1640189485', name:'Robert Daigle' },
+    { id:'77013635',   name:'Allan Selda' },
+    { id:'79374585',   name:'Michae Aquino' },
+    { id:'94846576',   name:'Fahad Yusuf' }
+  ]
+};
+</script>
+
+<!-- Search -->
+<div class="card" id="searchCard">
+  <h2>🔍 Find a customer in HubSpot</h2>
+  <div class="fg">
+    <span class="fl">Your name</span>
+    <select id="fRep"><option value="">— Select your name —</option></select>
+  </div>
+  <div class="fg">
+    <span class="fl">Company name</span>
+    <div class="row">
+      <input type="text" id="searchInput" placeholder="Start typing a company name…" onkeydown="if(event.key==='Enter')doSearch()">
+      <button class="btn btn-navy btn-sm" style="flex:0 0 auto;" onclick="doSearch()">Search</button>
+    </div>
+  </div>
+  <div id="searchResults"></div>
+</div>
+
+<!-- Editor -->
+<div class="card hidden" id="editor">
+  <div class="badge">
+    <div class="bn" id="bName">—</div>
+    <div class="bm" id="bMeta"></div>
+    <div class="status-note">🔒 Status / lifecycle is preserved — saving here never changes it.</div>
+  </div>
+  <button class="btn btn-outline btn-sm" style="margin-bottom:6px;" onclick="resetSearch()">← Change company</button>
+
+  <div class="sec-h">Company</div>
+  <div class="row">
+    <div class="fg"><span class="fl">Phone</span><input type="text" id="cPhone"></div>
+    <div class="fg"><span class="fl">Website</span><input type="text" id="cWebsite" placeholder="example.com"></div>
+  </div>
+  <div class="fg"><span class="fl">Street address</span><input type="text" id="cAddress"></div>
+  <div class="row">
+    <div class="fg"><span class="fl">City</span><input type="text" id="cCity"></div>
+    <div class="fg"><span class="fl">State / Province</span><input type="text" id="cState"></div>
+    <div class="fg"><span class="fl">Postal / Zip</span><input type="text" id="cZip"></div>
+  </div>
+  <div class="row">
+    <div class="fg"><span class="fl">Industry</span><select id="cIndustry"><option value="">— Select —</option></select></div>
+    <div class="fg"><span class="fl"># of locations</span><input type="text" id="cLocations"></div>
+  </div>
+
+  <div class="sec-h">Shipping</div>
+  <div class="row">
+    <div class="fg"><span class="fl">Parcel carrier</span><select id="cCarrierParcel"><option value="">— Select —</option></select></div>
+  </div>
+  <div class="fg"><span class="fl">Freight carriers (LTL/FTL) — check all that apply</span>
+    <div class="pills" id="grpFreight"></div></div>
+  <div class="row">
+    <div class="fg"><span class="fl">Parcel volume / week</span><input type="text" id="cParcelVol"></div>
+    <div class="fg"><span class="fl">Freight volume / week</span><input type="text" id="cFreightVol"></div>
+    <div class="fg"><span class="fl">Projected weekly margin</span><input type="text" id="cMargin"></div>
+  </div>
+
+  <div class="sec-h">Decision-maker contact</div>
+  <div class="row">
+    <div class="fg"><span class="fl">First name</span><input type="text" id="dmFirst"></div>
+    <div class="fg"><span class="fl">Last name</span><input type="text" id="dmLast"></div>
+  </div>
+  <div class="fg"><span class="fl">Title</span><input type="text" id="dmTitle"></div>
+  <div class="row">
+    <div class="fg"><span class="fl">Phone</span><input type="text" id="dmPhone"></div>
+    <div class="fg"><span class="fl">Email</span><input type="text" id="dmEmail"></div>
+  </div>
+  <div class="fh">Leave the contact blank to skip it. Filling it updates (or creates) the decision-maker — without changing their status.</div>
+
+  <div class="sec-h">Notes</div>
+  <div class="fg" id="priorWrap" style="display:none;">
+    <span class="fl">Existing notes (read-only)</span>
+    <div class="prior" id="priorNotes"></div>
+  </div>
+  <div class="fg"><span class="fl">Add a note</span><textarea id="addNote" placeholder="Anything to log — appended with your name &amp; today's date. Won't overwrite existing notes."></textarea></div>
+
+  <button class="btn btn-save" id="saveBtn" onclick="save()">💾 Save changes</button>
+  <div class="save-msg" id="saveMsg"></div>
+</div>
+
+</div>
+
+<script>
+// ---- data layer: Cowork bridge OR /api/hs backend (password-gated on the web) ----
+function hasCowork(){ return !!(window.cowork && window.cowork.callMcpTool); }
+async function mcp(tool, args){
+  if(hasCowork()) return window.cowork.callMcpTool(`${CFG.TOOL}__${tool}`, args);
+  const res = await fetch('api/hs', { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ tool, args, password: localStorage.getItem('ix_pw')||'' }) });
+  if(res.status===401){ localStorage.removeItem('ix_pw'); showLogin('Wrong password — try again.'); throw new Error('Login required'); }
+  if(!res.ok) throw new Error('Server error '+res.status);
+  return res.json();
+}
+function showLogin(msg){ document.getElementById('login').classList.remove('hidden'); document.getElementById('pwErr').textContent=msg||''; document.getElementById('pwInput').focus(); }
+function submitLogin(){ const pw=document.getElementById('pwInput').value.trim(); if(!pw) return; localStorage.setItem('ix_pw',pw); document.getElementById('login').classList.add('hidden'); }
+
+// ---- helpers (same as the qualification sheet) ----
+function v(id){ const e=document.getElementById(id); return e ? e.value.trim() : ''; }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+function repName(){ const s=document.getElementById('fRep'); return s.options[s.selectedIndex] ? s.options[s.selectedIndex].text : ''; }
+function fmtPhone(raw){ if(!raw) return ''; let d=String(raw).replace(/\D/g,''); if(d.length===11&&d[0]==='1') d=d.slice(1); return d.length===10 ? ('+1'+d) : raw; }
+function newIdFrom(r){
+  if(!r) return '';
+  const groups=[ r.createResults&&r.createResults.results, r.created, r.results, r.objects ];
+  for(const arr of groups){ if(Array.isArray(arr)&&arr[0]){ const x=arr[0]; return x.objectId||(x.object&&x.object.id)||x.id||''; } }
+  return r.objectId||r.id||'';
+}
+function firstError(r){ const arr=(r&&r.createResults&&r.createResults.results)||(r&&r.results)||[]; const e=Array.isArray(arr)?arr.find(o=>o&&o.error):null; return e?e.error:''; }
+function setVal(id,val){ const e=document.getElementById(id); if(e && val!=null && val!=='') e.value=val; }
+function checkVals(grpId){ return [...document.getElementById(grpId).querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value).join(';'); }
+function setChecks(grpId,val){ if(val==null) return; const want=new Set(String(val).split(';'));
+  document.getElementById(grpId).querySelectorAll('input[type=checkbox]').forEach(cb=>{ const on=want.has(cb.value); cb.checked=on; cb.parentElement.classList.toggle('on',on); }); }
+function setSelect(id,val){ const e=document.getElementById(id); if(!e || val==null || val==='') return;
+  if(![...e.options].some(o=>o.value===val)){ const o=document.createElement('option'); o.value=val; o.textContent=val; e.appendChild(o); } e.value=val; }
+
+const LIFE_LABEL={ subscriber:'Subscriber', lead:'Lead', marketingqualifiedlead:'Marketing Qualified', salesqualifiedlead:'Sales Qualified', opportunity:'Opportunity', customer:'Customer', evangelist:'Evangelist', other:'Other' };
+let customer=null, priorNotes='';
+
+// ---- init ----
+(function init(){
+  const sel=document.getElementById('fRep'); CFG.REPS.forEach(r=>{ const o=document.createElement('option'); o.value=r.id; o.textContent=r.name; sel.appendChild(o); });
+  const ind=document.getElementById('cIndustry'); CFG.INDUSTRIES.forEach(([val,lab])=>{ const o=document.createElement('option'); o.value=val; o.textContent=lab; ind.appendChild(o); });
+  const pc=document.getElementById('cCarrierParcel'); CFG.PARCEL_CARRIERS.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; pc.appendChild(o); });
+  const fg=document.getElementById('grpFreight'); CFG.LTL_CARRIERS.forEach(c=>{ const l=document.createElement('label'); l.className='pill'; const cb=document.createElement('input'); cb.type='checkbox'; cb.value=c; cb.onchange=()=>l.classList.toggle('on',cb.checked); l.appendChild(cb); l.appendChild(document.createTextNode(' '+c)); fg.appendChild(l); });
+  const saved=localStorage.getItem('ix_rep'); if(saved && CFG.REPS.some(r=>r.id===saved)) sel.value=saved;
+  sel.addEventListener('change',()=>{ if(sel.value) localStorage.setItem('ix_rep',sel.value); });
+})();
+window.addEventListener('load', function(){
+  const pi=document.getElementById('pwInput'); if(pi) pi.addEventListener('keydown',e=>{ if(e.key==='Enter') submitLogin(); });
+  if(!hasCowork() && !localStorage.getItem('ix_pw')) showLogin('');
+});
+
+// ---- search ----
+async function doSearch(){
+  const q=document.getElementById('searchInput').value.trim(); if(!q) return;
+  const res=document.getElementById('searchResults');
+  res.innerHTML='<div style="color:#888;padding:8px 0;font-size:13px;"><span class="spin"></span> Searching HubSpot…</div>';
+  try{
+    const r=await mcp('search_crm_objects',{ objectType:'companies', query:q, properties:['name','phone','city','state'], limit:8,
+      chatInsights:{ userIntent:'Find customer to update', satisfaction:'NEUTRAL' } });
+    const items=r.results||[];
+    if(!items.length){ res.innerHTML='<div style="color:#888;font-size:13px;padding:8px 0;">No matches in HubSpot for that name.</div>'; return; }
+    res.innerHTML=items.map(c=>`<div class="result-item" onclick="pick('${c.id}','${esc(c.properties.name||'')}')">
+        <div><div class="rname">${esc(c.properties.name||'—')}</div>
+        <div class="rsub">${[c.properties.city,c.properties.state].filter(Boolean).join(', ')}${c.properties.phone?' · '+esc(c.properties.phone):''}</div></div>
+        <span class="tag-exist">HubSpot</span></div>`).join('');
+  }catch(e){ res.innerHTML=`<div style="color:#c0392b;font-size:13px;padding:8px 0;">Search failed: ${esc(e.message)}</div>`; }
+}
+
+async function pick(id,name){
+  if(!document.getElementById('fRep').value){ alert('Select your name first.'); return; }
+  customer={ id, name }; priorNotes='';
+  document.getElementById('searchCard').classList.add('hidden');
+  document.getElementById('editor').classList.remove('hidden');
+  document.getElementById('bName').textContent=name;
+  document.getElementById('bMeta').innerHTML='HubSpot ID: '+esc(id)+' · <span class="spin"></span> loading…';
+  window.scrollTo(0,0);
+  await loadCustomer(id);
+}
+
+async function loadCustomer(id){
+  const PROPS=['name','lifecyclestage','phone','website','address','city','state','zip','industry','of_locations',
+    'current_carrier__prospect_','current_carrier__freight__canada','ups_volume','current_freight_volume','projected_weekly_margin',
+    'any_other_information_about_the_shipment'];
+  try{
+    const r=await mcp('get_crm_objects',{ objectType:'companies', objectIds:[parseInt(id)], properties:PROPS });
+    const obj=(r.objects||r.results||(Array.isArray(r)?r:[]))[0]; const p=(obj&&obj.properties)||{};
+    setVal('cPhone',p.phone); setVal('cWebsite',p.website); setVal('cAddress',p.address);
+    setVal('cCity',p.city); setVal('cState',p.state); setVal('cZip',p.zip);
+    setSelect('cIndustry',p.industry); setVal('cLocations',p.of_locations);
+    setSelect('cCarrierParcel',p.current_carrier__prospect_); setChecks('grpFreight',p.current_carrier__freight__canada);
+    setVal('cParcelVol',p.ups_volume); setVal('cFreightVol',p.current_freight_volume); setVal('cMargin',p.projected_weekly_margin);
+    priorNotes=p.any_other_information_about_the_shipment||'';
+    if(priorNotes){ document.getElementById('priorNotes').textContent=priorNotes; document.getElementById('priorWrap').style.display='block'; }
+    // lifecycle chip (read-only)
+    const life=p.lifecyclestage||''; const isCust=life==='customer';
+    const lab=LIFE_LABEL[life]||life||'—';
+    document.getElementById('bMeta').innerHTML='HubSpot ID: '+esc(id)
+      + ' · <span class="chip '+(isCust?'chip-cust':'chip-other')+'">'+(isCust?'⭐ ':'')+esc(lab)+'</span>';
+    await loadDecisionMaker(id);
+  }catch(e){
+    document.getElementById('bMeta').innerHTML='HubSpot ID: '+esc(id)+' · <span style="color:#c0392b;">couldn\'t load saved data</span>';
+  }
+}
+
+async function loadDecisionMaker(companyId){
+  try{
+    const s=await mcp('search_crm_objects',{ objectType:'contacts',
+      properties:['firstname','lastname','jobtitle','email','phone'],
+      filterGroups:[{ associatedWith:[{ objectType:'companies', operator:'EQUAL', objectIdValues:[parseInt(companyId)] }] }],
+      limit:1, chatInsights:{ userIntent:'Load decision maker for customer', satisfaction:'NEUTRAL' } });
+    const c=(s.results||[])[0]; if(!c) return; const p=c.properties||{};
+    setVal('dmFirst',p.firstname); setVal('dmLast',p.lastname); setVal('dmTitle',p.jobtitle); setVal('dmEmail',p.email); setVal('dmPhone',p.phone);
+  }catch(e){}
+}
+
+function resetSearch(){
+  customer=null;
+  document.getElementById('editor').classList.add('hidden');
+  document.getElementById('searchCard').classList.remove('hidden');
+  document.getElementById('searchResults').innerHTML='';
+  document.querySelectorAll('#editor input:not([type=checkbox]), #editor textarea').forEach(el=>el.value='');
+  document.getElementById('cIndustry').selectedIndex=0; document.getElementById('cCarrierParcel').selectedIndex=0;
+  setChecks('grpFreight',';');
+  document.getElementById('priorWrap').style.display='none';
+  const m=document.getElementById('saveMsg'); m.className='save-msg'; m.textContent='';
+}
+
+// ---- save: company + contact info ONLY. No lifecyclestage, no lead status, no deal. ----
+async function save(){
+  if(!customer){ return; }
+  if(!document.getElementById('fRep').value){ alert('Select your name first.'); return; }
+  const btn=document.getElementById('saveBtn'); btn.disabled=true;
+  const msg=document.getElementById('saveMsg'); msg.className='save-msg saving'; msg.innerHTML='<span class="spin"></span> Saving to HubSpot…';
+  try{
+    // COMPANY — only non-empty fields (never wipes existing data); NO status/lifecycle/owner
+    const cp={}; const set=(k,val)=>{ if(val!=='') cp[k]=val; };
+    set('phone',v('cPhone')); set('website',v('cWebsite')); set('address',v('cAddress'));
+    set('city',v('cCity')); set('state',v('cState')); set('zip',v('cZip'));
+    set('industry',v('cIndustry')); set('of_locations',v('cLocations'));
+    set('current_carrier__prospect_',v('cCarrierParcel')); set('current_carrier__freight__canada',checkVals('grpFreight'));   // multiple-checkbox property
+    set('ups_volume',v('cParcelVol')); set('current_freight_volume',v('cFreightVol')); set('projected_weekly_margin',v('cMargin'));
+    // append note (preserve existing notes)
+    if(v('addNote')){
+      const stamp='— '+repName()+' · '+new Date().toISOString().slice(0,10)+' —';
+      cp['any_other_information_about_the_shipment']=(priorNotes?priorNotes+'\n\n':'')+stamp+'\n'+v('addNote');
+    }
+    if(Object.keys(cp).length){
+      await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+        updateRequest:{ objects:[{ objectType:'companies', objectId:parseInt(customer.id), properties:cp }] } });
+    }
+
+    // DECISION MAKER — info only, NO lifecyclestage / lead status
+    let contactWarn='';
+    if(v('dmFirst')){
+      const dm={ firstname:v('dmFirst'), lastname:v('dmLast')||v('dmFirst') };
+      if(v('dmTitle')) dm.jobtitle=v('dmTitle');
+      if(v('dmEmail')) dm.email=v('dmEmail');
+      if(v('dmPhone')) dm.phone=fmtPhone(v('dmPhone'));
+      let existing=null;
+      if(v('dmEmail')){
+        try{ const s=await mcp('search_crm_objects',{ objectType:'contacts', query:v('dmEmail'), properties:['email'], limit:1,
+          chatInsights:{ userIntent:'Find contact by email', satisfaction:'NEUTRAL' } }); existing=(s.results||[])[0]; }catch(e){}
+      }
+      if(!existing){
+        try{ const s2=await mcp('search_crm_objects',{ objectType:'contacts', properties:['firstname','lastname'],
+          filterGroups:[{ associatedWith:[{ objectType:'companies', operator:'EQUAL', objectIdValues:[parseInt(customer.id)] }] }], limit:10,
+          chatInsights:{ userIntent:'Find contact on company', satisfaction:'NEUTRAL' } });
+          existing=(s2.results||[]).find(c=>((c.properties.firstname||'')+' '+(c.properties.lastname||'')).trim().toLowerCase()===(v('dmFirst')+' '+(v('dmLast')||v('dmFirst'))).trim().toLowerCase());
+        }catch(e){}
+      }
+      if(existing){
+        await mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+          updateRequest:{ objects:[{ objectType:'contacts', objectId:parseInt(existing.id), properties:dm,
+            associations:[{ targetObjectId:parseInt(customer.id), targetObjectType:'companies' }] }] } });
+      }else{
+        const create=async()=> mcp('manage_crm_objects',{ confirmationStatus:'CONFIRMED',
+          createRequest:{ objects:[{ objectType:'contacts', properties:dm,
+            associations:[{ targetObjectId:parseInt(customer.id), targetObjectType:'companies' }] }] } });
+        let r=await create(); let cid=newIdFrom(r);
+        if(!cid && dm.phone){ delete dm.phone; contactWarn='phone not saved (invalid format)'; r=await create(); cid=newIdFrom(r); }
+        if(!cid) contactWarn='contact not saved'+(firstError(r)?' ('+firstError(r)+')':'');
+      }
+    }
+
+    msg.className='save-msg ok';
+    msg.innerHTML='✅ Saved — <b>'+esc(customer.name)+'</b>. Status &amp; lifecycle unchanged.'+(contactWarn?' <span style="color:#b06a00;">⚠️ '+esc(contactWarn)+'</span>':'');
+    btn.disabled=false;
+    // refresh prior-notes view + clear the add-note box so a second save doesn't double-append
+    if(v('addNote')){ priorNotes=cp['any_other_information_about_the_shipment']; document.getElementById('priorNotes').textContent=priorNotes; document.getElementById('priorWrap').style.display='block'; document.getElementById('addNote').value=''; }
+  }catch(e){
+    msg.className='save-msg err'; msg.textContent='❌ Save failed: '+(e&&e.message?e.message:e); btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
